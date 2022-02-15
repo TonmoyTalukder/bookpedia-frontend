@@ -35,6 +35,8 @@ import Divider from '@mui/material/Divider';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
+import useAuth from '../../../hooks/useAuth';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -52,6 +54,10 @@ const DevelopedAppbar = () => {
     const handleClose = () => {
       setAnchorEl(null);
     };
+
+
+    const {user, logout} = useAuth();
+
     return (
         <div>
             <Box sx={{ width: '100%', backgroundColor: 'black' }}>
@@ -102,12 +108,23 @@ const DevelopedAppbar = () => {
                     </Grid>
                     <Grid item xs={3}>
                         <Box sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'right', alignItems: 'center' }}>
-
-                            <NavLink style={{textDecoration: 'none', color: 'white'}} to="/login">
-                                <Button variant="text" style={{borderBottom: '2px', color: 'white'}}>
-                                    Login
-                                </Button>
-                            </NavLink>
+                        
+                        {
+                                user?.email ?
+                                    <Button variant="text" style={{borderBottom: '2px', color: 'white'}}>
+                                        <span>
+                                            <img style={{width: '40px', height: '50px', borderRadius: '50% 20% / 10% 40%'}} src={user.photoURL} alt="" />
+                                            {/* <img style={{width: '45px', height: '45px', borderRadius: '50%'}} src={user.photoURL} alt="" /> */}
+                                        </span>
+                                        <span>&emsp;{user.displayName}</span>
+                                    </Button>
+                                :
+                                    <NavLink style={{textDecoration: 'none', color: 'white'}} to="/login">
+                                        <Button variant="text" style={{borderBottom: '2px', color: 'white'}}>
+                                            Login
+                                        </Button>
+                                    </NavLink>
+                            }
 
                             <NavLink style={{textDecoration: 'none', color: 'white'}} to="/notifications">
                                 <Button variant="text" style={{borderBottom: '2px', color: 'white'}}>
@@ -126,13 +143,13 @@ const DevelopedAppbar = () => {
                                     aria-haspopup="true"
                                     aria-expanded={open ? 'true' : undefined}
                                 >
-                                    <NavLink style={{textDecoration: 'none', color: 'white'}} to="/saved">
+                                    <Box style={{textDecoration: 'none', color: 'white'}}>
                                         <Avatar sx={{ width: 32, height: 32, backgroundColor: 'transparent' }}>
                                             <Button variant="text" style={{borderBottom: '2px', color: 'white'}}>
                                                 <ArrowDropDownCircleRoundedIcon/>
                                             </Button>
                                         </Avatar>
-                                    </NavLink>
+                                    </Box>
                                     
                                 </IconButton>
                                 </Tooltip>
@@ -174,29 +191,50 @@ const DevelopedAppbar = () => {
                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
                                     <MenuItem>
-                                    <Avatar /> Profile
+                                    <img style={{margin: 'auto', width: '40px', height: '50px', borderRadius: '50% 20% / 10% 40%'}} src={user.photoURL} alt={user.displayName} />
                                     </MenuItem>
                                     <MenuItem>
-                                    <Avatar /> My account
+                                        <Avatar /> Profile
                                     </MenuItem>
+                                    {/* <MenuItem>
+                                        <Avatar /> My account
+                                    </MenuItem> */}
                                     <Divider />
+                                    {/* <MenuItem>
+                                        <ListItemIcon>
+                                            <PersonAdd fontSize="small" />
+                                        </ListItemIcon>
+                                        Add another account
+                                    </MenuItem> */}
+                                    {/* <MenuItem>
+                                        <ListItemIcon>
+                                            <Settings fontSize="small" />
+                                        </ListItemIcon>
+                                        Settings
+                                    </MenuItem> */}
                                     <MenuItem>
-                                    <ListItemIcon>
-                                        <PersonAdd fontSize="small" />
-                                    </ListItemIcon>
-                                    Add another account
-                                    </MenuItem>
-                                    <MenuItem>
-                                    <ListItemIcon>
-                                        <Settings fontSize="small" />
-                                    </ListItemIcon>
-                                    Settings
-                                    </MenuItem>
-                                    <MenuItem>
-                                    <ListItemIcon>
-                                        <Logout fontSize="small" />
-                                    </ListItemIcon>
-                                    Logout
+                                        
+                                        {/* Logout */}
+                                        {
+                                            user?.email ?
+                                            <>
+                                                <ListItemIcon>
+                                                    <Logout fontSize="small" />
+                                                </ListItemIcon>
+                                                <Button onClick={logout} variant="text" style={{borderBottom: '2px', color: 'gray'}}>
+                                                    Logout
+                                                </Button>
+                                            </>
+                                            :
+                                                <NavLink style={{textDecoration: 'none', color: 'white'}} to="/login">
+                                                    <ListItemIcon>
+                                                        <LoginIcon fontSize="small" />
+                                                    </ListItemIcon>
+                                                    <Button variant="text" style={{borderBottom: '2px', color: 'gray'}}>
+                                                        Login
+                                                    </Button>
+                                                </NavLink>
+                                        }
                                     </MenuItem>
                                 </Menu>
 

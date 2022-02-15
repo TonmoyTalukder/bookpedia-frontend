@@ -1,83 +1,36 @@
-import { Button, Card, CardActions, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Button, Card, CardActions, CardContent, CircularProgress, Grid, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-
-// const style = {
-//     position: 'absolute',
-//     top: '50%',
-//     left: '50%',
-//     transform: 'translate(-50%, -50%)',
-//     width: 400,
-//     bgcolor: 'white',
-//     border: '2px solid #000',
-//     boxShadow: 24,
-//     p: 4,
-//   };
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import useAuth from '../../../../hooks/useAuth';
+import AddLinkIcon from '@mui/icons-material/AddLink';
 
 const Register = () => {
 
-    const [addingSuccess, setAddingSuccess] = useState(false);
+    const {user, registerUser, isLoading, authError} = useAuth();
 
-    const initialInfo = {firstName: '', surName: '', email: '', password: '', datee: '', gender: ''};
-
-    const [addingInfo, setAddingInfo] = useState(initialInfo);
-
-    // const handleOnBlur = e => {
-    //     const field = e.target.name;
-    //     const value = e.target.value;
-    //     const newInfo = {...addingInfo};
-    //     newInfo[field] = value;
-    //     // console.log(newInfo);
-    //     setAddingInfo(newInfo);
-    // }
-
+    const history = useHistory();
 
     const [registrationData, setRegistrationData] = useState({});
 
-    const handleOnchange = e => {
+    const handleOnBlur = e => {
         const field = e.target.name;
         const value = e.target.value;
-        console.log(field, value);
         const newRegistrationData = {...registrationData};
         newRegistrationData[field] = value;
+        console.log(newRegistrationData);
         setRegistrationData(newRegistrationData);
     }
 
-    useEffect( () =>{
-        const url = '/api/users/'
-        fetch(url)
-        .then(res => res.json())
-        .then(data => console.log(data));
-    }, [])
-
 
     const handleRegistrationSubmit = e => {
-
-        // // Collect Data
-        // const apartment = {
-        //     ...addingInfo
-        // }
-        // // Send to the Server
-        // // console.log(apartment);
-        // fetch('https://localhost:44373/api/users', {
-        //     method: 'POST',
-        //     headers: {
-        //         'content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify(apartment)
-        // })
-        // .then(res => res.json())
-        // .then(data => {
-        //     if(data.insertedId){
-        //         setAddingSuccess(true);
-        //         setAddingInfo(initialInfo);
-        //         e.target.reset();
-        //     }
-        // });
-        // e.preventDefault();
-
-        // e.preventDefault();
+        if(registrationData.password !== registrationData.confirmPassword){
+            alert('Your password did not match.');
+            return;
+        }
+        registerUser(registrationData.imageURL, registrationData.name, registrationData.email, registrationData.password, history);
+        e.preventDefault();
     }
     return (
         <div>
@@ -107,49 +60,54 @@ const Register = () => {
                                     </Typography>
                                 </CardContent>
                                 <CardContent>
-                                <form onSubmit={handleRegistrationSubmit}>
-                                    <TextField 
-                                        style={{width: '100%', paddingBottom: '12px'}}
-                                        label={'Name'} 
-                                        name="firstName"
-                                        onChange={handleOnchange} 
-                                        id="margin-none" />
-                                    <TextField 
-                                        style={{width: '100%', paddingBottom: '12px'}} 
-                                        label={'Email'} 
-                                        name="email"
-                                        onChange={handleOnchange} 
-                                        id="margin-none" />
-                                    <TextField 
-                                        style={{width: '100%', paddingBottom: '12px'}} 
-                                        label={'New Password'} 
-                                        type="password"
-                                        name="password"
-                                        onChange={handleOnchange}
-                                        id="margin-none" />
-                                    <TextField 
-                                        style={{width: '100%', paddingBottom: '12px'}} 
-                                        label={'Confirm Password'} 
-                                        type="password"
-                                        name="ConfirmPassword"
-                                        onChange={handleOnchange}
-                                        id="margin-none" />
+                                    { !isLoading && <form onSubmit={handleRegistrationSubmit}>
+                                        <TextField 
+                                            style={{width: '100%', paddingBottom: '12px'}}
+                                            label="Profile Picture URL" 
+                                            name="imageURL"
+                                            onBlur={handleOnBlur} 
+                                            id="margin-none" />
+                                        <TextField 
+                                            style={{width: '100%', paddingBottom: '12px'}}
+                                            label="Name" 
+                                            name="name"
+                                            onBlur={handleOnBlur} 
+                                            id="margin-none" />
+                                        <TextField 
+                                            style={{width: '100%', paddingBottom: '12px'}} 
+                                            label="Email" 
+                                            name="email"
+                                            onBlur={handleOnBlur} 
+                                            id="margin-none" />
+                                        <TextField 
+                                            style={{width: '100%', paddingBottom: '12px'}} 
+                                            label="New Password"
+                                            type="password"
+                                            name="password"
+                                            onBlur={handleOnBlur}
+                                            id="margin-none" />
+                                        <TextField 
+                                            style={{width: '100%', paddingBottom: '12px'}} 
+                                            label="Confirm Password"
+                                            type="password"
+                                            name="confirmPassword"
+                                            onBlur={handleOnBlur}
+                                            id="margin-none" />
 
-                                    <Button 
-                                        variant="contained" 
-                                        style={{backgroundColor: '#38B682', width: '80%', paddingBottom: '10px', margin: 'auto'}}
-                                        type="submit"    
-                                    >Register</Button>
-                                    </form>
+                                        <Button 
+                                            variant="contained" 
+                                            style={{backgroundColor: '#38B682', width: '80%', paddingBottom: '10px', margin: 'auto', marginBottom: '20px'}}
+                                            type="submit"    
+                                        >Register</Button>
+                                    </form>}
+                                    {isLoading && <CircularProgress />}
+                                    {user?.email && <Alert severity="success" style={{marginTop: '2px'}}>Account created successfully!</Alert>}
+                                    {authError && <Alert severity="error">{authError}</Alert>}
                                 </CardContent>
-                                {/* <CardContent>
-                                    <Button variant="contained" style={{backgroundColor: '#38B682', width: '100%', paddingTop: '5px'}}>Register</Button>
-                                </CardContent> */}
                                 <CardActions>
                                         <NavLink style={{textDecoration: 'none', color: 'white', width: '100%'}} to="/login">
                                             <Button variant="text" style={{color: '#38B682', width: '80%', paddingTop: '2px'}}>Already Registered? Login</Button>
                                         </NavLink>
-                                    
                                 </CardActions>
                             </Card>
                         </Box>
