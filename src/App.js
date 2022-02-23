@@ -18,6 +18,7 @@ import useAuth from './hooks/useAuth';
 import PrivateRoute from './components/Shared/Login/PrivateRoute/PrivateRoute';
 import PublicRoute from './components/Shared/Login/PublicRoute/PublicRoute';
 import axios from 'axios';
+import Dashboard from './components/Home/Dashboard/Dashboard';
 
 
 
@@ -37,13 +38,13 @@ import axios from 'axios';
 
 
 function App() {
-  axios.get('/api/inventories')
-  .then(function (response){
-    for(let i = 0; i<9; i++){
-      if(response.data[i].type === 'blog')
-      console.log(response.data[i]);
-    }
-  })
+  // axios.get('/api/inventories')
+  // .then(function (response){
+  //   for(let i = 0; i<9; i++){
+  //     if(response.data[i].type === 'blog')
+  //     console.log(response.data[i]);
+  //   }
+  // })
   return (
     <div className="App">
       <AuthProvider>
@@ -63,6 +64,13 @@ function App() {
             </PrivateRoute>
             <PrivateRoute exact path='/blogs'>
               <Blogs></Blogs>
+            </PrivateRoute>
+            <PrivateRoute exact path='/profile'>
+              <Dashboard></Dashboard>
+            </PrivateRoute>
+            
+            <PrivateRoute exact path='/users/:userID'>
+              <Dashboard></Dashboard>
             </PrivateRoute>
             
             <PrivateRoute exact path='/notifications'>

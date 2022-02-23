@@ -194,7 +194,15 @@ const DevelopedAppbar = () => {
                                     <img style={{margin: 'auto', width: '40px', height: '50px', borderRadius: '50% 20% / 10% 40%'}} src={user.photoURL} alt={user.displayName} />
                                     </MenuItem>
                                     <MenuItem>
-                                        <Avatar /> Profile
+
+
+                                        <NavLink style={{textDecoration: 'none', color: 'white'}} to="/profile">
+                                            <ListItemIcon>
+                                                <Avatar /> Profile
+                                            </ListItemIcon>
+                                        </NavLink>
+
+                                        
                                     </MenuItem>
                                     {/* <MenuItem>
                                         <Avatar /> My account

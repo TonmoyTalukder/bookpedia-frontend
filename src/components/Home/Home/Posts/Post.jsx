@@ -37,9 +37,9 @@ const Post = ({post}) => {
                                 </Typography>
                                 <br />
                                 
-                                <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
+                                {bookDriveUrl && <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
                                     <a href="{bookDriveUrl}">Download the Book</a>
-                                </Typography>
+                                </Typography>}
                                 <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
                                     {blogDetails}
                                 </Typography>

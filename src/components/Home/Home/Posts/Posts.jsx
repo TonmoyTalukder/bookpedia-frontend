@@ -10,17 +10,18 @@ const Posts = () => {
 
     const [posts, setPosts] = useState([]);
 
-    // useEffect(() => {
-    //     const url = '/api/inventories';
-    //     fetch = (url)
-    //     .then(res =>res.json())
-    //     .then(data => setPosts(data));
-    // }, [])
+    useEffect(() => {
 
-    axios.get('/api/inventories')
-    .then(function (response){
-        setPosts(response.data.reverse());
-    })
+        axios.get('/api/inventories')
+        .then(function (response){
+            setPosts(response.data.reverse());
+        })
+        
+        // const url = '/api/inventories';
+        // fetch = (url)
+        // .then(res =>res.json())
+        // .then(data => console.log(data.map(data=>data.email.));
+    }, [])
 
 //     axios.get('/api/inventories')
 //   .then(function (response){
