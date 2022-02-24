@@ -33,7 +33,8 @@ const useFirebase = () => {
         history.replace('/');
       })
       .catch((error) => {
-        setAuthError(error.message);
+        // setAuthError(error.message);
+        setAuthError("Something is wrong. May be Password or Email issue. Email could be in use.");
       })
       .finally(() => setIsLoading(false));
   }
@@ -92,9 +93,26 @@ const useFirebase = () => {
   const saveUser = (email, photoURL, displayName) => {
     const user = { email, photoURL, displayName };
 
-    axios.post('/api/users', {
-      email, photoURL, displayName
-    });
+    try{
+
+    } catch{
+      
+    }
+
+    let flag = 0;
+
+    axios.get(`/api/users?email=${email}`)
+        .then(function (response){
+            if(response.email === null){
+              flag = 1;
+            }
+        })
+    console.log("After Get from Login")
+    if(flag === 1){
+      axios.post('/api/users', {
+        email, photoURL, displayName
+      });
+    }
   
     // fetch('https://localhost:44373/api/users', {
     //   method: method,
@@ -105,10 +123,11 @@ const useFirebase = () => {
     // })
     //   .then()
   }
+
   const updateUser = (email, photoURL, displayName) => {
     const user = { email, photoURL, displayName };
 
-    axios.post('/api/users', {
+    axios.put('/api/users', {
       email, photoURL, displayName
     });
   

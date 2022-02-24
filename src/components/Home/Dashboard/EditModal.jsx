@@ -22,17 +22,22 @@ const style = {
   p: 4,
 };
 
-const EditModal = ({openEditProfile, handleEditProfileClose, singleUser, databaseUser}) => {
+const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
     const {id, displayName, email, photoUrl, date} = singleUser;
 
-    const initialInfo = { id, userName: displayName, userEmail: email, photoURL: photoUrl, birthday: date };
+    const initialInfo = { userName: displayName, userEmail: email, photoURL: photoUrl, birthday: date };
 
 
     console.log('initial info ',initialInfo);
 
     const [userInfo, setUserInfo] = useState(initialInfo);
-    console.log('User info ');
-    console.log(userInfo);
+    
+    
+
+    useEffect(()=>{
+      console.log('User info ');
+      // console.log(userInfo);
+    }, [userInfo]);
 
     const handleOnBlur = (e) => {
       const field = e.target.name;
@@ -43,8 +48,8 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser, databas
 
       const newInfo  = {...userInfo};
       newInfo[field] = value;
-      // console.log(newInfo);
-      setUserInfo(newInfo);
+      console.log(newInfo);
+      setUserInfo({id, ...newInfo});
 
       // console.log('User info ',userInfo);
 
@@ -58,25 +63,38 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser, databas
         }
         // Send data to server
         // console.log('userInfo');
-        // console.log(userInfo);
+        console.log(userInfo);
 
-        console.log(editProfile);
+        // console.log(editProfile);
 
 
-        for(let dbuser in databaseUser){
+        // for(let dbuser in databaseUser){
           // if(databaseUser[dbuser] === user.email){
               // console.log(databaseUser[dbuser]);
 
               axios.put(`/api/users/${id}`,{
-                  // console.log(response.data);
-                  // setSingleUser(response.data);
-                  editProfile
+                  // console.log(userInfo)
+                  id: userInfo.id,
+                  displayName: userInfo.userName,
+                  email: userInfo.userEmail,
+                  photoUrl: userInfo.photoURL,
+                  date: userInfo.birthday
               });
+              console.log("After Put", userInfo);
 
               // axios.post('/api/users', {
               //   editProfile
               // });
-      }
+
+              // fetch(`/api/users/${id}`, {
+              //   method: 'PUT',
+              //   headers: {
+              //     'content-type': 'application/json'
+              //   },
+              //   body: JSON.stringify(userInfo)
+              // })
+              //   .then()
+              
 
         handleEditProfileClose();
         e.preventDefault();
@@ -100,6 +118,18 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser, databas
             </Typography>
             <form onSubmit={handleBookingSubmit}>
                 
+                <TextField
+                    // label="Size"
+                    disabled
+                    sx={{width: '90%', m:1}}
+                    id="outlined-size-small"
+                    name = "id"
+                    onBlur = {handleOnBlur}
+                    value={id}
+                    size="small"
+                    label="ID"
+                    focused
+                />
                 <TextField
                     // label="Size"
                     // disabled
