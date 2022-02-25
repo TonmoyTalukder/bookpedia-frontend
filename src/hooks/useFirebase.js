@@ -8,6 +8,8 @@ initializeFirebase();
 
 const useFirebase = () => {
   const [user, setUser] = useState({});
+  const [userMail, setUserMail] = useState({});
+  const [mailCheck, setMailCheck] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState('');
 
@@ -93,21 +95,40 @@ const useFirebase = () => {
   const saveUser = (email, photoURL, displayName) => {
     const user = { email, photoURL, displayName };
 
-    try{
+    let flag = 1;
+    // console.log("Before from Login");
+    // console.log(flag);
 
-    } catch{
-      
+    axios.get(`/api/users`)
+        .then(function (response){
+            // if(response.displayName === null){
+            //   flag = 1;
+            // }
+            setUserMail(response.data.map(data=>data.email));
+        })
+
+    // axios.get(`/api/users`)
+    //     .then(function (response){
+    //         setMailCheck(response.data.map(data=>data.email).find(uu=>(uu === email)));
+    //         console.log(mailCheck);
+    //         console.log(Object.keys(mailCheck).length);
+    //         console.log('Mail');
+    //     })
+    
+    //     if(Object.keys(mailCheck).length === 0){
+    //       flag = 1;
+    //     }
+
+    for(let x in userMail){
+      // console.log()
+      if(userMail[x]===email){
+        flag = 0;
+      }
     }
 
-    let flag = 0;
+    // console.log("After Get from Login");
+    // console.log(flag);
 
-    axios.get(`/api/users?email=${email}`)
-        .then(function (response){
-            if(response.email === null){
-              flag = 1;
-            }
-        })
-    console.log("After Get from Login")
     if(flag === 1){
       axios.post('/api/users', {
         email, photoURL, displayName

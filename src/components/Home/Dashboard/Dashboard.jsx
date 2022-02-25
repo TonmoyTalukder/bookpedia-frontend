@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import EditModal from './EditModal';
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
+import Home from '../Home/Home';
 const Dashboard = () => {
     const{user} = useAuth();
 
@@ -46,8 +47,8 @@ const Dashboard = () => {
     useEffect(()=>{
         axios.get(`/api/users?email=${singleUser}`)
             .then(function (response){
-                console.log('singleUser');
-                console.log(response.data);
+                // console.log('singleUser');
+                // console.log(response.data);
                 setNewSingleUser(response.data);
             })
     }, [singleUser]);
@@ -143,6 +144,8 @@ const Dashboard = () => {
                                             handleEditProfileClose = {handleEditProfileClose}
 
                                         ></EditModal>
+
+                                        
                                     </ListItemIcon>
                                     <br />
                                     
@@ -166,6 +169,11 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
             </Box>
+            {/* <Home
+
+                                            singleUser={newSingleUser}
+
+                                        ></Home> */}
         </div>
     );
 };

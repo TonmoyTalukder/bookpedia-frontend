@@ -1,16 +1,19 @@
-import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Grid, ListItem, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import useAuth from '../../../../hooks/useAuth';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import useUserInfo from '../../../../hooks/useUserInfo';
+import PostRating from '../Rating/PostRating';
 const Post = ({post}) => {
-    const{user} = useAuth();
-    const{id, type, title, bookDriveUrl, authorName, blogDetails, coverImageUrl} = post;
+    // const{user} = useAuth();
+    const{singleUserInfo} = useUserInfo();
 
-    // if(bookDriveUrl == 'null'){
-        
-    // }
+    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageUrl, category} = post;
+
+//    console.log(authorName);
 
     return (
         <div>
@@ -21,34 +24,64 @@ const Post = ({post}) => {
                     <Card sx={{ minWidth: 700, border: '1px solid  #575757', borderRadius: '5px', backgroundColor: ' #575757' }}>
                         
                         <CardActions>
-                            <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: '25px'}} src={user.photoURL} alt="User's Photo" />
+                            {/* <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}} src={singleUserInfo.photoURL} alt="User's Photo" /> */}
+
+                            {
+                                singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={singleUserInfo.photoURL} alt="" />
+                            }
+                            {
+                                !singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
+                            }
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
                                 <BorderColorIcon/> {authorName}
                             </Typography>
                         </CardActions>
                         <CardActions style={{justifyContent: 'left'}}>
-                            <img style={{width: '140px', height: '200px'}} src={coverImageUrl} alt="" />
+                            <img style={{width: '40%', height: '200px'}} src={coverImageUrl} alt="" />
                             <span style={{ fontSize: 120, color: 'white' }}>|</span>
                              
-                            <Box>
+                            <Box style={{width: '60%'}}>
                                 <Typography sx={{ fontSize: 35, color: 'white' }} color="text.secondary" gutterBottom>
-                                    {title}
+                                    {postTitle}
                                 </Typography>
                                 <br />
                                 
-                                {bookDriveUrl && <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
-                                    <a href="{bookDriveUrl}">Download the Book</a>
+                                {bookURL && <>
+                                    <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
+                                        <a style={{textDecoration: "none"}} href="{bookURL}">
+                                            <Button style={{color: 'white'}} variant="outlined"> <CloudDownloadIcon/> &nbsp;&nbsp;Download the Book</Button>
+                                        </a>
+                                    </Typography>
+                                    <a style={{textDecoration: "none"}} href={`/post/${id}`}>
+                                        <Button style={{color: 'white'}} variant="outlined"> <AutoStoriesIcon/> &nbsp;&nbsp;Read Online</Button>
+                                    </a>
+
+                                </>}
+                                {blogPost && <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
+                                    {
+                                        blogPost.length > 108? 
+                                            <>
+                                                {blogPost.substring(0, 108)}...
+                                                <a style={{textDecoration: "none"}} href={`/post/${id}`}>
+                                                    <Button style={{color: 'white'}} variant="outlined"> <AutoStoriesIcon/> &nbsp;&nbsp;Read More</Button>
+                                                </a>
+                                            </>
+                                            :
+                                            <>
+                                                {blogPost}
+                                            </>
+                                    }
                                 </Typography>}
-                                <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
-                                    {blogDetails}
+
+                                <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
+                                        Category: {category}
                                 </Typography>
+                                <PostRating/>
                             </Box>
                         </CardActions>
                         <CardContent>
-                            
-                                
-                            
+                                                        
                         </CardContent>
                         <CardActions style={{justifyContent: 'center'}}>
                             

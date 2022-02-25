@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../../../../hooks/useAuth';
 import Post from './Post';
 
-const Posts = () => {
+const Posts = ({category}) => {
     const {user, isLoading} = useAuth();
 
     const [posts, setPosts] = useState([]);
@@ -59,6 +59,7 @@ const Posts = () => {
                                 posts.map(post => <Post
                                     key = {post.id}
                                     post = {post}
+                                    category={category}
                                 ></Post>)
                             }
                         </Grid>

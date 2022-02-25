@@ -19,6 +19,8 @@ import PrivateRoute from './components/Shared/Login/PrivateRoute/PrivateRoute';
 import PublicRoute from './components/Shared/Login/PublicRoute/PublicRoute';
 import axios from 'axios';
 import Dashboard from './components/Home/Dashboard/Dashboard';
+import SinglePost from './components/Home/Home/Posts/SinglePost';
+import Space from './components/Space/Space/Space';
 
 
 
@@ -65,8 +67,16 @@ function App() {
             <PrivateRoute exact path='/blogs'>
               <Blogs></Blogs>
             </PrivateRoute>
+            
             <PrivateRoute exact path='/profile'>
               <Dashboard></Dashboard>
+            </PrivateRoute>
+
+            <PrivateRoute exact path='/post/:postId'>
+              <SinglePost></SinglePost>
+            </PrivateRoute>
+            <PrivateRoute exact path='/space'>
+              <Space></Space>
             </PrivateRoute>
             
             <PrivateRoute exact path='/users/:userID'>

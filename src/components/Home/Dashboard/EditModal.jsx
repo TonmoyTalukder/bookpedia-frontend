@@ -36,22 +36,22 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
 
     useEffect(()=>{
       console.log('User info ');
-      // console.log(userInfo);
+      console.log(userInfo);
     }, [userInfo]);
 
     const handleOnBlur = (e) => {
       const field = e.target.name;
       const value = e.target.value;
     
-      // console.log('User info ');
-      // console.log(userInfo);
+      console.log('User info ');
+      console.log(userInfo);
 
       const newInfo  = {...userInfo};
       newInfo[field] = value;
       console.log(newInfo);
       setUserInfo({id, ...newInfo});
 
-      // console.log('User info ',userInfo);
+      console.log('User info ',userInfo);
 
     }
 
@@ -62,18 +62,17 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
           ...userInfo
         }
         // Send data to server
-        // console.log('userInfo');
+        console.log('userInfo');
         console.log(userInfo);
 
-        // console.log(editProfile);
+        console.log(editProfile);
 
 
         // for(let dbuser in databaseUser){
           // if(databaseUser[dbuser] === user.email){
-              // console.log(databaseUser[dbuser]);
+              ////// console.log(databaseUser[dbuser]);
 
               axios.put(`/api/users/${id}`,{
-                  // console.log(userInfo)
                   id: userInfo.id,
                   displayName: userInfo.userName,
                   email: userInfo.userEmail,
