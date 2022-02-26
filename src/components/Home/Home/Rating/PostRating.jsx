@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 
 export default function PostRating() {
   return (
-    <Stack spacing={1}>
+    <Stack style={{color: 'white'}} spacing={1}>
       <Rating name="half-rating" defaultValue={0} precision={0.5} />
     </Stack>
   );

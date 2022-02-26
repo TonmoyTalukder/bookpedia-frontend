@@ -56,8 +56,10 @@ const BlogModal = ({openBlogModal, handleBlogModalClose}) => {
 
         axios.post(`/api/inventories/`,{
             authorName: singleUserInfo.displayName,
+            email: singleUserInfo.email,
             postTitle: postInfo.postTitle,
             type: 'blog',
+            coverImageURL: postInfo.coverImageURL,
             blogPost: postInfo.blogPost,
             category: postInfo.category
         });
@@ -140,6 +142,18 @@ const BlogModal = ({openBlogModal, handleBlogModalClose}) => {
                     label="Book"
                     focused
                 /> */}
+                <TextField
+                    // label="Size"
+                    // disabled
+                    sx={{width: '90%', m:1}}
+                    id="outlined-size-small"
+                    name = "coverImageURL"
+                    onBlur = {handleOnBlur}
+                    defaultValue=""
+                    size="small"
+                    label="Cover Image URL"
+                    focused
+                />
                 <TextField
                     id="outlined-textarea"
                     // label="Multiline Placeholder"

@@ -96,8 +96,8 @@ const useFirebase = () => {
     const user = { email, photoURL, displayName };
 
     let flag = 1;
-    // console.log("Before from Login");
-    // console.log(flag);
+    console.log("Before from Login");
+    console.log(flag);
 
     axios.get(`/api/users`)
         .then(function (response){
@@ -126,10 +126,12 @@ const useFirebase = () => {
       }
     }
 
-    // console.log("After Get from Login");
-    // console.log(flag);
+    console.log("After Get from Login");
+    console.log(flag);
 
     if(flag === 1){
+      console.log("Flag in condition");
+      console.log(flag);
       axios.post('/api/users', {
         email, photoURL, displayName
       });

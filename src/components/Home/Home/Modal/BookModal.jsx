@@ -55,9 +55,11 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
 
         axios.post(`/api/inventories/`,{
             authorName: singleUserInfo.displayName,
+            email: singleUserInfo.email,
             postTitle: postInfo.postTitle,
             type: 'book',
             bookURL: postInfo.bookURL,
+            coverImageURL: postInfo.coverImageURL,
             category: postInfo.category
         });
         // console.log("After Put", postInfo);
@@ -104,7 +106,7 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                     focused
                 /> */}
                 <TextField
-                    // label="Size"
+                    label="Size"
                     disabled
                     sx={{width: '90%', m:1}}
                     id="outlined-size-small"
@@ -112,7 +114,7 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                     onBlur = {handleOnBlur}
                     defaultValue={singleUserInfo.displayName}
                     size="small"
-                    label="Name"
+                    label="Author Name"
                     focused
                 />
                 <TextField
@@ -144,11 +146,23 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                     // disabled
                     sx={{width: '90%', m:1}}
                     id="outlined-size-small"
+                    name = "coverImageURL"
+                    onBlur = {handleOnBlur}
+                    defaultValue=""
+                    size="small"
+                    label="Cover Image URL"
+                    focused
+                />
+                <TextField
+                    // label="Size"
+                    // disabled
+                    sx={{width: '90%', m:1}}
+                    id="outlined-size-small"
                     name = "bookURL"
                     onBlur = {handleOnBlur}
                     defaultValue=""
                     size="small"
-                    label="Book PDF Valid URL"
+                    label="Book PDF Valid Drive URL"
                     focused
                 />
 

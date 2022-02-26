@@ -2,13 +2,11 @@ import { CircularProgress, Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import useAuth from '../../../../hooks/useAuth';
-import Post from './Post';
+import useAuth from '../../../hooks/useAuth';
+import BlogPost from './BlogPost';
 
-
-const Posts = ({category}) => {
+const BlogPosts = () => {
     const {user, isLoading} = useAuth();
-
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -18,32 +16,14 @@ const Posts = ({category}) => {
             setPosts(response.data.reverse());
         })
         
-        // const url = '/api/inventories';
-        // fetch = (url)
-        // .then(res =>res.json())
-        // .then(data => console.log(data.map(data=>data.email.));
     }, [])
 
-//     axios.get('/api/inventories')
-//   .then(function (response){
-//     for(let i = 0; i<9; i++){
-//       if(response.data[i].type === 'blog')
-//       setPosts(response.data[i]);
-//     }
-//   })
 
-//     axios.get('/api/inventories')
-//   .then(function (response){
-//     for(let i = 0; i<9; i++){
-//       if(response.data[i].type === 'blog')
-//         setPosts(response.data[i]);
-//     }
-//   })
 
     if(isLoading){return <CircularProgress/>}
     return (
-        <div>
-            <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
+        <div style={{backgroundColor: '#262626', height: '95vh'}}>
+            <Box variant="scrollable" style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
                 <Container>
                 
                     <Box
@@ -57,11 +37,10 @@ const Posts = ({category}) => {
                             className="specialCenter"
                         >
                             {
-                                posts.map(post => <Post
+                                posts.map(post => <BlogPost
                                     key = {post.id}
                                     post = {post}
-                                    category={category}
-                                ></Post>)
+                                ></BlogPost>)
                             }
                         </Grid>
                     </Box>
@@ -71,4 +50,4 @@ const Posts = ({category}) => {
     );
 };
 
-export default Posts;
+export default BlogPosts;

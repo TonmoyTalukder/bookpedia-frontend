@@ -8,6 +8,9 @@ import Header from '../../../Shared/Header/Header';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CloudDownloadSharpIcon from '@mui/icons-material/CloudDownload';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
+import Comments from '../../../Shared/Comments/Comments';
+
 const SinglePost = () => {
 
     const{singleUserInfo} = useUserInfo();
@@ -32,7 +35,7 @@ const SinglePost = () => {
     return (
         <div style={{ backgroundColor: '#262626', height: '100vh'}}>
             <Header />
-            <Grid item style={{ backgroundColor: '#262626', height: '100vh'}} xs={12} sm={12} md={12} lg={12} 
+            <Grid item style={{ backgroundColor: '#262626'}} xs={12} sm={12} md={12} lg={12} 
                 className="specialCenter"
             >
                 <Box style={{ borderRadius: '5px', textAlign: 'left', marginTop: '15px'}} sx={{ alignItems: 'center' }} >
@@ -49,7 +52,7 @@ const SinglePost = () => {
 
                         {
                             postDetails.bookURL &&
-                                <embed src={postDetails.bookURL.split("view?usp=sharing")[0].concat('preview')} alt={postDetails.postTitle} type="application/pdf" width="80%" height="1000px" />
+                                <embed src={postDetails.bookURL.split("view?usp=sharing")[0].concat('preview')} alt={postDetails.postTitle} type="application/pdf" width="60%" height="500px" />
                         }
 
                         {/* <iframe src="https://drive.google.com/file/d/15REV6zmvun8wealzG1LK3ibqPbNBXz7k/view?usp=sharing" width="80%" height="500px">
@@ -69,7 +72,7 @@ const SinglePost = () => {
                         <Card  style={{width: '80vw', backgroundColor: ' #575757', padding: '25px'}} sx={{ Width: '60%', border: '1px solid #575757', borderRadius: '5px' }}>
 
                             <Box style={{display: 'flex', justifyContent: 'center'}}>
-                                <img src={postDetails.photoURL} alt="" />
+                                <img src={postDetails.coverImageURL} alt="" />
                             </Box>
 
                             <Box>
@@ -91,6 +94,21 @@ const SinglePost = () => {
                     </Box>
                 </>}
                 </Box>
+
+                <Box style={{ borderRadius: '5px', textAlign: 'left', marginTop: '15px'}} sx={{ alignItems: 'center' }} >
+                <Box style={{display: 'flex', justifyContent: 'center'}}>
+                        <Card  style={{width: '80vw', backgroundColor: ' #575757', padding: '25px'}} sx={{border: '1px solid #575757', borderRadius: '5px' }}>
+
+                            <Box style={{width: '100%', display: 'flex', justifyContent: 'left'}}>
+                                <Comments
+                                    singlePostId={postDetails.id}
+                                />
+                            </Box>
+                        </Card>
+                    </Box>
+                
+                </Box>
+                
             </Grid>
         </div>
     );

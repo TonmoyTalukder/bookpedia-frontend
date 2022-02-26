@@ -214,7 +214,7 @@ const Home = ({singleUser}) => {
                     <Grid item xs={0} md={3}>
                         <Box style={{marginTop: '20px'}}>
                             <Typography variant="h5" style={{}} sx={{ color: 'white' }} color="text.secondary" gutterBottom>
-                                BookPedia Users    
+                               New 10 BookPedia Users    
                             </Typography>
 
                             <hr style={{ marginBottom: '20px', color: 'white' }}  />

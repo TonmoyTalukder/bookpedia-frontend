@@ -61,12 +61,12 @@ const Register = () => {
                                 </CardContent>
                                 <CardContent>
                                     { !isLoading && <form onSubmit={handleRegistrationSubmit}>
-                                        <TextField 
+                                        {/* <TextField 
                                             style={{width: '100%', paddingBottom: '12px'}}
                                             label="Profile Picture URL" 
                                             name="imageURL"
                                             onBlur={handleOnBlur} 
-                                            id="margin-none" />
+                                            id="margin-none" /> */}
                                         <TextField 
                                             style={{width: '100%', paddingBottom: '12px'}}
                                             label="Name" 

@@ -9,7 +9,7 @@ const Users = () => {
     useEffect(()=>{
         axios.get(`/api/users`)
     .then(function (response){
-        setAllUserInfo(response.data);
+        setAllUserInfo(response.data.reverse());
     })
     }, [])
     return (
@@ -25,7 +25,7 @@ const Users = () => {
                     className="specialCenter"
                 >
                     {
-                        allUserInfo.map(allUser => <User
+                        allUserInfo.slice(0,10).map(allUser => <User
                             key = {allUser.id}
                             allUser = {allUser}
                         ></User>)
