@@ -21,7 +21,7 @@ const useFirebase = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Save User to Database
-        saveUser(email, imageURL, name);
+        SaveUser(email, imageURL, name);
         setAuthError('');
         const newUser = { email, photoURL: imageURL, displayName: name };
         setUser(newUser);
@@ -61,7 +61,7 @@ const useFirebase = () => {
       .then((result) => {
         const user = result.user;
         // Save User to Database
-        saveUser(user.email, user.photoURL, user.displayName);
+        SaveUser(user.email, user.photoURL, user.displayName);
         setAuthError('');
       }).catch((error) => {
         setAuthError(error.message);
@@ -92,21 +92,44 @@ const useFirebase = () => {
   }
 
   // Save User informations in database
-  const saveUser = (email, photoURL, displayName) => {
+  const SaveUser = (email, photoURL, displayName) => {
     const user = { email, photoURL, displayName };
 
     let flag = 1;
     console.log("Before from Login");
     console.log(flag);
 
-    axios.get(`/api/users`)
-        .then(function (response){
-            // if(response.displayName === null){
-            //   flag = 1;
-            // }
-            setUserMail(response.data.map(data=>data.email));
-        })
 
+    useEffect(()=>{
+        let getCheck = false;
+        axios.get(`/api/users`)
+          .then(function (response){
+              getCheck = true;
+              setUserMail(response.data.map(data=>data.email));
+          })
+
+        if(getCheck === true){
+          for(let x in userMail){
+            if(userMail[x]===email){
+              flag = 0;
+            }
+          }
+    
+          console.log("After Get from Login");
+          console.log(flag);
+    
+          if(flag === 1){
+            console.log("Flag in condition");
+            console.log(flag);
+            axios.post('/api/users', {
+              email, photoURL, displayName
+            });
+          }
+        }
+      
+    }, [])
+
+    
     // axios.get(`/api/users`)
     //     .then(function (response){
     //         setMailCheck(response.data.map(data=>data.email).find(uu=>(uu === email)));
@@ -119,24 +142,6 @@ const useFirebase = () => {
     //       flag = 1;
     //     }
 
-    for(let x in userMail){
-      // console.log()
-      if(userMail[x]===email){
-        flag = 0;
-      }
-    }
-
-    console.log("After Get from Login");
-    console.log(flag);
-
-    if(flag === 1){
-      console.log("Flag in condition");
-      console.log(flag);
-      axios.post('/api/users', {
-        email, photoURL, displayName
-      });
-    }
-  
     // fetch('https://localhost:44373/api/users', {
     //   method: method,
     //   headers: {
