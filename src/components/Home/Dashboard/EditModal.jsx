@@ -28,30 +28,30 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
     const initialInfo = { userName: displayName, userEmail: email, photoURL: photoUrl, birthday: date };
 
 
-    console.log('initial info ',initialInfo);
+    // console.log('initial info ',initialInfo);
 
     const [userInfo, setUserInfo] = useState(initialInfo);
     
     
 
     useEffect(()=>{
-      console.log('User info ');
-      console.log(userInfo);
+      // console.log('User info ');
+      // console.log(userInfo);
     }, [userInfo]);
 
     const handleOnBlur = (e) => {
       const field = e.target.name;
       const value = e.target.value;
     
-      console.log('User info ');
-      console.log(userInfo);
+      // console.log('User info ');
+      // console.log(userInfo);
 
       const newInfo  = {...userInfo};
       newInfo[field] = value;
-      console.log(newInfo);
+      // console.log(newInfo);
       setUserInfo({id, ...newInfo});
 
-      console.log('User info ',userInfo);
+      // console.log('User info ',userInfo);
 
     }
 
@@ -62,10 +62,10 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
           ...userInfo
         }
         // Send data to server
-        console.log('userInfo');
-        console.log(userInfo);
+        // console.log('userInfo');
+        // console.log(userInfo);
 
-        console.log(editProfile);
+        // console.log(editProfile);
 
 
         // for(let dbuser in databaseUser){
@@ -75,11 +75,11 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
               axios.put(`/api/users/${id}`,{
                   id: userInfo.id,
                   displayName: userInfo.userName,
-                  email: userInfo.userEmail,
+                  email: email,
                   photoUrl: userInfo.photoURL,
                   date: userInfo.birthday
               });
-              console.log("After Put", userInfo);
+              // console.log("After Put", userInfo);
 
               // axios.post('/api/users', {
               //   editProfile
@@ -143,7 +143,7 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
                 />
                 <TextField
                     // label="Size"
-                    // disabled
+                    disabled
                     sx={{width: '90%', m:1}}
                     id="outlined-size-small"
                     name = "userEmail"

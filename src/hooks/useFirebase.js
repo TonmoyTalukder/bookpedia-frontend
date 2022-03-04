@@ -9,7 +9,7 @@ initializeFirebase();
 const useFirebase = () => {
   const [user, setUser] = useState({});
   const [userMail, setUserMail] = useState({});
-  const [mailCheck, setMailCheck] = useState({});
+  // const [mailCheck, setMailCheck] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState('');
 
@@ -21,7 +21,7 @@ const useFirebase = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Save User to Database
-        SaveUser(email, imageURL, name);
+        updateUser(email, imageURL, name);
         setAuthError('');
         const newUser = { email, photoURL: imageURL, displayName: name };
         setUser(newUser);
@@ -61,7 +61,7 @@ const useFirebase = () => {
       .then((result) => {
         const user = result.user;
         // Save User to Database
-        SaveUser(user.email, user.photoURL, user.displayName);
+        updateUser(user.email, user.photoURL, user.displayName);
         setAuthError('');
       }).catch((error) => {
         setAuthError(error.message);
@@ -100,13 +100,18 @@ const useFirebase = () => {
     console.log(flag);
 
 
-    useEffect(()=>{
+    // useEffect(()=>{
         let getCheck = false;
-        axios.get(`/api/users`)
+        console.log(getCheck);
+        axios.get('/api/users')
           .then(function (response){
               getCheck = true;
               setUserMail(response.data.map(data=>data.email));
+              console.log(getCheck);
           })
+
+          console.log(getCheck);
+
 
         if(getCheck === true){
           for(let x in userMail){
@@ -127,7 +132,7 @@ const useFirebase = () => {
           }
         }
       
-    }, [])
+    // }, [])
 
     
     // axios.get(`/api/users`)
@@ -155,7 +160,7 @@ const useFirebase = () => {
   const updateUser = (email, photoURL, displayName) => {
     const user = { email, photoURL, displayName };
 
-    axios.put('/api/users', {
+    axios.post('/api/users', {
       email, photoURL, displayName
     });
   

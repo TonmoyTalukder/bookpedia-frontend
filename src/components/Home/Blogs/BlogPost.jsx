@@ -12,11 +12,32 @@ import CategoryIcon from '@mui/icons-material/Category';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
 import useUserInfo from '../../../hooks/useUserInfo';
 import PostRating from '../Home/Rating/PostRating';
+import axios from 'axios';
 
 const BlogPost = ({post}) => {
     const{singleUserInfo} = useUserInfo();
 
     const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category} = post;
+
+    const handleSaveOnClick = (e) => {
+        alert('Saved Successfully!');
+    
+        const postSaved = {
+            userEmail: singleUserInfo.email,
+            UserId: singleUserInfo.id,
+            inventoryId: id
+        }
+    
+        console.log('postSaved');
+        console.log(postSaved);
+        
+    
+        axios.post(`/api/Usersaveds/`,{
+            userEmail: singleUserInfo.email,
+            UserId: singleUserInfo.id,
+            inventoryId: id
+        });
+      }
     return (
         <div>
             <Grid item xs={12} sm={12} md={12} lg={12} 
@@ -71,7 +92,7 @@ const BlogPost = ({post}) => {
                                     <IconButton style={{color: 'white'}} aria-label="add to favorites">
                                         <FavoriteIcon />
                                     </IconButton>
-                                    <IconButton  style={{color: 'white'}} aria-label="share">
+                                    <IconButton onClick={handleSaveOnClick} style={{color: 'white'}} aria-label="share">
                                         <CollectionsBookmarkRoundedIcon />
                                     </IconButton>
                                     <IconButton style={{color: 'white'}} aria-label="rating">

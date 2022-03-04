@@ -45,7 +45,9 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-const DevelopedAppbar = () => {
+const DevelopedAppbar = ({allUser}) => {
+    const{id, photoUrl, displayName, email} = allUser;
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -196,7 +198,7 @@ const DevelopedAppbar = () => {
                                     <MenuItem>
 
 
-                                        <NavLink style={{textDecoration: 'none', color: 'white'}} to="/profile">
+                                        <NavLink style={{textDecoration: 'none', color: 'white'}} to={`/user/${id}`}>
                                             <ListItemIcon>
                                                 <Avatar /> Profile
                                             </ListItemIcon>

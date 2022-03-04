@@ -5,6 +5,7 @@ const User = ({allUser}) => {
     const{id, photoUrl, displayName, email} = allUser;
 
     return (
+        <a style={{textDecoration: "none"}} href={`/user/${id}`}>
             <ListItem disablePadding>
                 <ListItemButton>
                     <ListItemIcon sx={{ color: 'white' }}>
@@ -21,6 +22,8 @@ const User = ({allUser}) => {
                     </Typography>
                 </ListItemButton>
             </ListItem>
+        </a>
+            
     );
 };
 

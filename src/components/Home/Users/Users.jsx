@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import DevelopedAppbar from '../../Shared/Header/DevelopedAppbar';
 import User from './User';
 
 const Users = () => {
@@ -14,6 +15,12 @@ const Users = () => {
     }, [])
     return (
         <div>
+            {/* {
+                allUserInfo.slice(0,10).map(allUser => <DevelopedAppbar
+                    key = {allUser.id}
+                    allUser = {allUser}
+                ></DevelopedAppbar>)
+            } */}
             <Box
                 direction="column"
                 alignItems="center"

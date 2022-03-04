@@ -12,7 +12,7 @@ const Comments = ({singlePostId}) => {
     const{singleUserInfo} = useUserInfo();
     const {user, isLoading} = useAuth();
 
-    console.log(singleUserInfo)
+    // console.log(singleUserInfo)
 
     const initialInfo = { User: singleUserInfo, UserId: singleUserInfo.id, postId: singlePostId, photoURL: singleUserInfo.photoURL};
 
@@ -30,7 +30,7 @@ const Comments = ({singlePostId}) => {
   
         const newInfo  = {...commentInfo};
         newInfo[field] = value;
-        console.log(newInfo);
+        // console.log(newInfo);
         setCommentInfo({...newInfo});
       }
 
@@ -42,7 +42,7 @@ const Comments = ({singlePostId}) => {
             User: singleUserInfo,
             UserId: singleUserInfo.id,
             postId: singlePostId,
-            photoURL: singleUserInfo.photoUrl,
+            // photoURL: singleUserInfo.photoUrl,
             comment: commentInfo.comment,
         }
         // console.log(singleUserInfo);
@@ -50,7 +50,6 @@ const Comments = ({singlePostId}) => {
         // console.log(postComment);
 
         axios.post(`/api/comments/`,{
-            User: singleUserInfo,
             UserId: singleUserInfo.id,
             postId: singlePostId,
             photoURL: singleUserInfo.photoURL,
@@ -71,10 +70,12 @@ const Comments = ({singlePostId}) => {
         console.log('New Func Enter');
         console.log(singlePostId);
 
-        axios.get('/api/comments')
+        axios.get(`/api/comments?postId=${singlePostId}`)
             .then(function (response){
                 // console.log(response.data.map(data=>data.email));
-                setShowCommentInfo(response.data.reverse().map(data=>data).filter(comment => (comment.postId === singlePostId)));
+                // setShowCommentInfo(response.data.reverse().map(data=>data).filter(comment => (comment.postId === singlePostId)));
+                // console.log(response.data.reverse().map(data=>data).filter(comment => (comment.postId === singlePostId)));
+                setShowCommentInfo(response.data.reverse());
                 console.log(response.data.reverse());
                 // console.log(response.data.map(data=>data.email).find(uu=>(uu === user.email)));
             })
@@ -82,9 +83,15 @@ const Comments = ({singlePostId}) => {
 
     useEffect(()=>{
         if(singlePostId !== null){
-            newFunc();
+            // newFunc();
+            axios.get(`/api/comments?postId=${singlePostId}`)
+            .then(function (response){
+                setShowCommentInfo(response.data.reverse());
+                console.log(response.data.reverse());
+                // console.log(response.data.map(data=>data.email).find(uu=>(uu === user.email)));
+            })
         }
-    }, [])
+    }, [singlePostId])
 
     console.log('singlePostId');
     console.log(singlePostId);
@@ -140,7 +147,7 @@ const Comments = ({singlePostId}) => {
             <Box variant="scrollable" style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
                 <Container>
                 
-                    <Box
+                    {showCommentInfo && <Box
                         direction="column"
                         alignItems="center"
                         justifyContent="center"
@@ -150,14 +157,14 @@ const Comments = ({singlePostId}) => {
                             columns={{ xs: 12, sm: 12, md: 12 }}
                             className="specialCenter"
                         >
-                            {/* {
+                            {
                                 showCommentInfo.map(postedComment => <Comment
                                     key = {postedComment.id}
                                     postedComment = {postedComment}
                                 ></Comment>)
-                            } */}
+                            }
                         </Grid>
-                    </Box>
+                    </Box>}
                 </Container>
             </Box>
         </div>

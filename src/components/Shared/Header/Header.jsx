@@ -1,12 +1,28 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import useAuth from '../../../hooks/useAuth';
 import DevelopedAppbar from './DevelopedAppbar';
 
 const Header = () => {
+    const{user} = useAuth();
+    const [allUserInfo, setAllUserInfo] = useState([]);
+    useEffect(()=>{
+        axios.get(`/api/users`)
+        .then(function (response){
+            setAllUserInfo(response.data.reverse().map(data=>data).filter(uu=>(uu.email === user.email)));
+        })
+    }, [])
     return (
         <div>
             <Box style={{padding: '0%'}}>
-                <DevelopedAppbar/>
+                    {
+                        allUserInfo.slice(0,10).map(allUser => <DevelopedAppbar
+                            key = {allUser.id}
+                            allUser = {allUser}
+                        ></DevelopedAppbar>)
+                    }
+                {/* <DevelopedAppbar/> */}
             </Box>
         </div>
     );

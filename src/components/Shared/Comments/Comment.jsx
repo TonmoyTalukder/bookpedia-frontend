@@ -5,7 +5,6 @@ import React from 'react';
 const Comment = ({postedComment}) => {
     const{id, comment, User} = postedComment;
     return (
-        <div>
             <Grid item xs={12} sm={12} md={12} lg={12} 
                 className="specialCenter"
             >
@@ -16,7 +15,7 @@ const Comment = ({postedComment}) => {
 
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                                New Comment
+                                {User.displayName}
                             </Typography>
                         </CardActions>
                         <CardActions style={{justifyContent: 'left'}}>
@@ -27,7 +26,7 @@ const Comment = ({postedComment}) => {
                                 
 
                                 <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
-                                      
+                                      {comment}
                                 </Typography>
                                 <CardActions style={{justifyContent: 'center'}}>
                                     
@@ -44,7 +43,6 @@ const Comment = ({postedComment}) => {
                 </Box>
 
             </Grid>
-        </div>
     );
 };
 

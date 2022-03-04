@@ -1,4 +1,4 @@
-import { Box, Card, CardActions, CardContent, Grid, ListItemIcon, Typography } from '@mui/material';
+import { Box, Card, CardActions, CardContent, Container, Grid, ListItemIcon, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import Header from '../../Shared/Header/Header';
@@ -10,10 +10,12 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import EditModal from './EditModal';
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
 import Home from '../Home/Home';
+import Post from '../Home/Posts/Post';
+import UserPhotos from './UserPhotos';
 const Dashboard = () => {
     const{user} = useAuth();
 
-    const {userID} = useParams();
+    const {userId} = useParams();
 
     const [databaseUser, setDatabaseUser] = useState([]);
 
@@ -40,18 +42,25 @@ const Dashboard = () => {
             // }
     }
 
-    useEffect(() => {
-        newFunc();
-    }, []);
+    // useEffect(() => {
+    //     newFunc();
+    // }, []);
 
     useEffect(()=>{
-        axios.get(`/api/users?email=${singleUser}`)
+        axios.get(`/api/users/${userId}`)
             .then(function (response){
                 // console.log('singleUser');
-                // console.log(response.data);
+                console.log(response.data.email);
                 setNewSingleUser(response.data);
+
+                axios.get(`/api/inventories?email=${response.data.email}`)
+                .then(function (response){
+                setPosts(response.data.reverse());
+        })
             })
-    }, [singleUser]);
+            // console.log(newSingleUser.email);
+        
+    }, []);
 
     // console.log(databaseUser);
 
@@ -85,10 +94,19 @@ const Dashboard = () => {
     const handleEditProfileOpen = () => setOpenEditProfile(true);
     const handleEditProfileClose = () => setOpenEditProfile(false);
 
+    // User Time Line
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+
+        
+    }, [])
+
     return (
-        <div>
+        <div style={{ backgroundColor: '#262626', height: '100vh'}}>
             <Header/>
-            <Box sx={{ padding: '5px', height: '100vh', backgroundColor: '#262626'}}>
+            <Box sx={{ padding: '5px', backgroundColor: '#262626'}}>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
                         <Card sx={{ minWidth: '100%', border: '1px solid  #575757', borderRadius: '5px', backgroundColor: ' #575757', marginLeft: '10%', marginTop: '5%' }}>
@@ -120,6 +138,7 @@ const Dashboard = () => {
                                         </Typography>
                                     </ListItemIcon>
                                     <br />
+                                    { newSingleUser.email===user.email && <>
                                     <ListItemIcon>
                                         {newSingleUser.date && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
                                             <CakeRoundedIcon/> {newSingleUser.date}
@@ -147,6 +166,7 @@ const Dashboard = () => {
 
                                         
                                     </ListItemIcon>
+                                    </>}
                                     <br />
                                     
                                     <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
@@ -164,8 +184,59 @@ const Dashboard = () => {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={8}>
-                        hello
+                    <Grid item xs={6}>
+                    <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
+                <Container>
+                
+                    <Box
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <Grid container 
+                            spacing={{ xs: 2, md: 3 }} 
+                            columns={{ xs: 12, sm: 12, md: 12 }}
+                            className="specialCenter"
+                        >
+                            {
+                                posts.map(post => <Post
+                                    key = {post.id}
+                                    post = {post}
+                                ></Post>)
+                            }
+                        </Grid>
+                    </Box>
+                </Container>
+            </Box>
+                    </Grid>
+
+                    <Grid item xs={3}>
+                        <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
+                            <Container>
+                                <Typography sx={{ fontSize: 26, color: 'white' }} color="text.secondary" gutterBottom>
+                                    Your Photos
+                                </Typography>
+                                
+                                <Box
+                                    direction="column"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <Grid container 
+                                        spacing={{ xs: 3, md: 3 }} 
+                                        columns={{ xs: 6, sm: 6, md: 6 }}
+                                        className="specialCenter"
+                                    >
+                                        {
+                                            posts.map(post => <UserPhotos
+                                                key = {post.id}
+                                                post = {post}
+                                            ></UserPhotos>)
+                                        }
+                                    </Grid>
+                                </Box>
+                </Container>
+            </Box>
                     </Grid>
                 </Grid>
             </Box>

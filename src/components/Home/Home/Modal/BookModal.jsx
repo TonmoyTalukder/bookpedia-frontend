@@ -18,7 +18,7 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
 
     const{singleUserInfo} = useUserInfo();
 
-    console.log(singleUserInfo.displayName);
+    // console.log(singleUserInfo.displayName);
 
     const initialInfo = { authorName: singleUserInfo.displayName };
 

@@ -21,6 +21,10 @@ import axios from 'axios';
 import Dashboard from './components/Home/Dashboard/Dashboard';
 import SinglePost from './components/Home/Home/Posts/SinglePost';
 import Space from './components/Space/Space/Space';
+import History from './components/Shared/Category/History';
+import Science from './components/Shared/Category/Science';
+import Nature from './components/Shared/Category/Nature';
+import useUserInfo from './hooks/useUserInfo';
 
 
 
@@ -68,20 +72,35 @@ function App() {
               <Blogs></Blogs>
             </PrivateRoute>
             
+            <PrivateRoute exact path='/category/history'>
+              <History/>
+            </PrivateRoute>
+            <PrivateRoute exact path='/category/science'>
+              <Science/>
+            </PrivateRoute>
+            <PrivateRoute exact path='/category/nature'>
+              <Nature/>
+            </PrivateRoute>
+
             <PrivateRoute exact path='/profile'>
+              <Dashboard></Dashboard>
+            </PrivateRoute>
+
+            <PrivateRoute exact path='/user/:userId'>
               <Dashboard></Dashboard>
             </PrivateRoute>
 
             <PrivateRoute exact path='/post/:postId'>
               <SinglePost></SinglePost>
             </PrivateRoute>
+
             <PrivateRoute exact path='/space'>
               <Space></Space>
             </PrivateRoute>
             
-            <PrivateRoute exact path='/users/:userID'>
+            {/* <PrivateRoute exact path='/users/:userID'>
               <Dashboard></Dashboard>
-            </PrivateRoute>
+            </PrivateRoute> */}
             
             <PrivateRoute exact path='/notifications'>
               <Notification></Notification>

@@ -34,8 +34,8 @@ const useUserInfo = () => {
     useEffect(()=>{
         axios.get(`/api/users?email=${getUserMail}`)
             .then(function (response){
-                console.log('singleUser');
-                console.log(response.data);
+                // console.log('singleUser');
+                // console.log(response.data);
                 setSingleUserInfo(response.data);
             })
     }, [getUserMail]);

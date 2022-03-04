@@ -12,6 +12,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import CategoryIcon from '@mui/icons-material/Category';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
+import axios from 'axios';
 
 const Post = ({post}) => {
     // const{user} = useAuth();
@@ -20,6 +21,27 @@ const Post = ({post}) => {
     const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category} = post;
 
 //    console.log(authorName);
+
+const handleSaveOnClick = (e) => {
+    alert('Saved Successfully!');
+
+    const postSaved = {
+        userEmail: singleUserInfo.email,
+        UserId: singleUserInfo.id,
+        inventoryId: id
+    }
+
+    console.log('postSaved');
+    console.log(postSaved);
+    
+
+    axios.post(`/api/Usersaveds/`,{
+        userEmail: singleUserInfo.email,
+        UserId: singleUserInfo.id,
+        inventoryId: id
+    });
+  }
+
 
     return (
         <div>
@@ -87,9 +109,11 @@ const Post = ({post}) => {
                                     <IconButton style={{color: 'white'}} aria-label="add to favorites">
                                         <FavoriteIcon />
                                     </IconButton>
-                                    <IconButton  style={{color: 'white'}} aria-label="share">
+
+                                    <IconButton onClick={handleSaveOnClick} style={{color: 'white'}} aria-label="share">
                                         <CollectionsBookmarkRoundedIcon />
                                     </IconButton>
+
                                     <IconButton style={{color: 'white'}} aria-label="rating">
                                         <PostRating/>
                                     </IconButton>
