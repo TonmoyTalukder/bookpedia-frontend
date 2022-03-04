@@ -71,6 +71,9 @@ const PostSearch = () => {
         .then(function (response){
             setPosts(response.data.reverse());
         })
+        
+    }, [])
+    useEffect(() => {
 
         axios.get(`/api/users`)
         .then(function (response){
@@ -80,17 +83,29 @@ const PostSearch = () => {
     }, [])
 
 const handleSearch = event =>{
-    const searchText = event.target.value;
-    console.log(searchText)
 
-    const matchedPosts = posts.filter(post => post.postTitle.toLowerCase().includes(searchText.toLowerCase()));
+    // useEffect=(()=>{
+        const searchText = event.target.value;
+        console.log(searchText)
 
-    const matchedUsers = allUserInfo.filter(user => user.displayName.toLowerCase().includes(searchText.toLowerCase()));
+        if(searchText.length === 0){
+            window.location.reload(false);
+        }
 
-    setPosts(matchedPosts);
-    setAllUserInfo(matchedUsers);
-    console.log(matchedPosts);
+        const matchedPosts = posts.filter(post => post.postTitle.toLowerCase().includes(searchText.toLowerCase()));
+
+        const matchedUsers = allUserInfo.filter(user => user.displayName.toLowerCase().includes(searchText.toLowerCase()));
+
+        setPosts(matchedPosts);
+        setAllUserInfo(matchedUsers);
+        console.log(matchedPosts);
+    // }, [])    
+    
 }
+
+function refreshPage() {
+    window.location.reload(false);
+  }
     return (
         <div style={{backgroundColor: '#262626', height: '100vh'}}>
             <span style={{width: '100%'}}>
@@ -108,6 +123,7 @@ const handleSearch = event =>{
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search on BookPedia"
+            //   onClick={refreshPage}
               onChange={handleSearch} 
               inputProps={{ 'aria-label': 'search' }}
             />
@@ -143,7 +159,7 @@ const handleSearch = event =>{
     </div>
 
 
-<div style={{backgroundColor: '#262626'}}> 
+<div style={{backgroundColor: '#262626', marginTop: '10px'}}> 
 <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
                     Posts
                 </Typography>
