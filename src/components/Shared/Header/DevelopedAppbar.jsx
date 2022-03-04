@@ -57,6 +57,16 @@ const DevelopedAppbar = ({allUser}) => {
       setAnchorEl(null);
     };
 
+    // const handleSearch = event =>{
+    //     const searchText = event.target.value;
+    //     console.log(searchText)
+    //     // const matchedProducts = posts.filter(post => post.postTitle.toLowerCase().includes(searchText.toLowerCase()));
+    //     // setDisplayProducts(matchedProducts);
+
+    //     // console.log(matchedProducts.length);
+    // }
+
+
 
     const {user, logout} = useAuth();
 
@@ -67,7 +77,9 @@ const DevelopedAppbar = ({allUser}) => {
                     <Grid item xs={3}>
                         <Box sx={{ display: { xs: 'none', sm: 'flex' }, textAlign: 'left', alignItems: 'center' }}>
                             <img src={Logo} style={{width: '70px'}} alt="" />
-                            <Paper
+                            {/* onClick="location.href = '/blogs';" */}
+                           <a href="/search" style={{textDecoration: 'none'}}>
+                           <Paper 
                                 component="form"
                                 sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 250 }}
                                 >
@@ -76,9 +88,13 @@ const DevelopedAppbar = ({allUser}) => {
                                 </IconButton>
                                 <InputBase
                                     sx={{ ml: 1, flex: 1 }}
+                                    type="text" 
                                     placeholder="Search BookPedia"
                                 />
                             </Paper>
+                           </a>
+
+                            
                         </Box>
                     </Grid>
                     <Grid item xs={6}>

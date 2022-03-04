@@ -25,6 +25,8 @@ import History from './components/Shared/Category/History';
 import Science from './components/Shared/Category/Science';
 import Nature from './components/Shared/Category/Nature';
 import useUserInfo from './hooks/useUserInfo';
+import PostSearch from './components/Search/PostSearch';
+import Search from '@mui/icons-material/Search';
 
 
 
@@ -98,9 +100,9 @@ function App() {
               <Space></Space>
             </PrivateRoute>
             
-            {/* <PrivateRoute exact path='/users/:userID'>
-              <Dashboard></Dashboard>
-            </PrivateRoute> */}
+            <PrivateRoute exact path='/search'>
+              <PostSearch/>
+            </PrivateRoute>
             
             <PrivateRoute exact path='/notifications'>
               <Notification></Notification>

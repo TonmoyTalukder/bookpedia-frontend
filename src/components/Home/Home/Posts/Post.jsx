@@ -1,6 +1,6 @@
-import { Button, Card, CardActions, CardContent, Grid, IconButton, ListItem, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Grid, IconButton, ListItem, Rating, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useAuth from '../../../../hooks/useAuth';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -13,14 +13,46 @@ import AddCommentIcon from '@mui/icons-material/AddComment';
 import CategoryIcon from '@mui/icons-material/Category';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
 import axios from 'axios';
+import RatingModal from '../Modal/RatingModal';
 
 const Post = ({post}) => {
     // const{user} = useAuth();
     const{singleUserInfo} = useUserInfo();
 
-    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category} = post;
+    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category, rating} = post;
 
 //    console.log(authorName);
+
+
+const [ratingInfo, setRatingInfo] = useState([]);
+
+let avgRating = 0;
+let sumRating = 0;
+let flag = 0;
+
+useEffect(() => {
+    axios.get(`/api/Ratings?postId=${id}`)
+    .then(function (response){
+        // console.log('id');
+        // console.log(id);
+        // console.log(response.data.reverse().map(data=>data.rating));
+        setRatingInfo(response.data.reverse().map(data=>data.rating));
+    })
+    
+}, [id])
+
+for (let x in ratingInfo) {
+    sumRating += ratingInfo[x];
+    flag += 1;
+  }
+if(sumRating>0){
+    avgRating = sumRating/flag;
+} else if(sumRating === 0){
+    avgRating = sumRating;
+}
+// console.log(sumRating);
+// console.log(avgRating);
+
 
 const handleSaveOnClick = (e) => {
     alert('Saved Successfully!');
@@ -40,6 +72,14 @@ const handleSaveOnClick = (e) => {
         UserId: singleUserInfo.id,
         inventoryId: id
     });
+  }
+
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+    const handleRatingModalOpen = () => setOpenRatingModal(true);
+    const handleRatingModalClose = () => setOpenRatingModal(false);
+
+  const handleRatingOnClick = (e) =>{
+      alert("Rating!")
   }
 
 
@@ -114,9 +154,19 @@ const handleSaveOnClick = (e) => {
                                         <CollectionsBookmarkRoundedIcon />
                                     </IconButton>
 
-                                    <IconButton style={{color: 'white'}} aria-label="rating">
-                                        <PostRating/>
+                                    <IconButton onClick={handleRatingModalOpen} style={{color: 'white'}} aria-label="rating">
+                                        <>
+                                            <Rating name="read-only" value={avgRating} readOnly />
+                                        </>
                                     </IconButton>
+
+                                    <RatingModal
+                                        rating = {rating}
+                                        id = {id}
+                                        singleUserInfo = {singleUserInfo}
+                                        openRatingModal = {openRatingModal}
+                                        handleRatingModalClose = {handleRatingModalClose}
+                                    ></RatingModal>
                                     <IconButton aria-label="comment">
                                     <a style={{textDecoration: "none"}} href={`/post/${id}`}>
                                                     <Button style={{color: 'white'}} variant="outlined"> <AddCommentIcon/> &nbsp;&nbsp;Add Comment</Button>

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import DevelopedAppbar from './DevelopedAppbar';
 
-const Header = () => {
+const Header = ({pots}) => {
     const{user} = useAuth();
     const [allUserInfo, setAllUserInfo] = useState([]);
     useEffect(()=>{
@@ -20,6 +20,7 @@ const Header = () => {
                         allUserInfo.slice(0,10).map(allUser => <DevelopedAppbar
                             key = {allUser.id}
                             allUser = {allUser}
+                            posts
                         ></DevelopedAppbar>)
                     }
                 {/* <DevelopedAppbar/> */}

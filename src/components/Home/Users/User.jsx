@@ -1,10 +1,13 @@
-import { ListItem, ListItemButton, ListItemIcon, Typography } from '@mui/material';
+import { Grid, ListItem, ListItemButton, ListItemIcon, Typography } from '@mui/material';
 import React from 'react';
 
 const User = ({allUser}) => {
     const{id, photoUrl, displayName, email} = allUser;
 
     return (
+        <Grid item xs={12} sm={12} md={12} lg={12} 
+                className="specialCenter"
+            >
         <a style={{textDecoration: "none"}} href={`/user/${id}`}>
             <ListItem disablePadding>
                 <ListItemButton>
@@ -22,7 +25,7 @@ const User = ({allUser}) => {
                     </Typography>
                 </ListItemButton>
             </ListItem>
-        </a>
+        </a></Grid>
             
     );
 };

@@ -51,7 +51,9 @@ const Posts = ({singleUser}) => {
     if(isLoading){return <CircularProgress/>}
     return (
         <div>
-            <Header />
+            <Header 
+                posts = {posts}
+            />
 
             <Box sx={{ padding: '5px', width: '100%', backgroundColor: '#262626' }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ alignItems: 'flex-start', backgroundColor: '#262626' }} >
