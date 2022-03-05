@@ -45,6 +45,12 @@ const SinglePost = () => {
                     <Box style={{display: 'flex', justifyContent: 'center'}}>
                         <Button><a className="download-resume" style={{textDecoration: 'none', color: 'white', border: '1px solid gray', borderRadius: '5px', padding: '10px'}} href={postDetails.bookURL} download="Tonmoy Talukder Resume Junior Web Developer">    <CloudDownloadSharpIcon/> Download: {postDetails.postTitle}</a></Button>
                     </Box>
+
+                    <Box style={{display: 'flex', justifyContent: 'center'}}>
+                                <Typography sx={{ fontSize: 28, color: 'white' }} color="text.secondary" gutterBottom>
+                                        {postDetails.postTitle}
+                                </Typography>
+                            </Box>
                     
                     <Box style={{display: 'flex', justifyContent: 'center'}}>
 
@@ -71,14 +77,17 @@ const SinglePost = () => {
                     <Box style={{display: 'flex', justifyContent: 'center'}}>
                         <Card  style={{width: '80vw', backgroundColor: ' #575757', padding: '25px'}} sx={{ Width: '60%', border: '1px solid #575757', borderRadius: '5px' }}>
 
+                            <Box>
+                                <Typography sx={{ fontSize: 28, color: 'white' }} color="text.secondary" gutterBottom>
+                                        {postDetails.postTitle}
+                                </Typography>
+                            </Box>
+
                             <Box style={{display: 'flex', justifyContent: 'center'}}>
                                 <img src={postDetails.coverImageURL} alt="" />
                             </Box>
 
                             <Box>
-                                <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                                        {postDetails.postTitle}
-                                </Typography>
 
                                 <Typography sx={{ fontSize: 16, color: 'white' }} color="text.secondary" gutterBottom>
                                         <BorderColorIcon/> {postDetails.authorName}

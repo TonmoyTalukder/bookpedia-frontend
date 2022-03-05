@@ -1,6 +1,6 @@
-import { Button, Card, CardActions, CardContent, Grid, IconButton, ListItem, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Grid, IconButton, ListItem, Rating, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
@@ -13,9 +13,10 @@ import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookm
 import useUserInfo from '../../../hooks/useUserInfo';
 import PostRating from '../Home/Rating/PostRating';
 import axios from 'axios';
+import RatingModal from '../Home/Modal/RatingModal';
 const Book = ({post}) => {
     const{singleUserInfo} = useUserInfo();
-    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category} = post;
+    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category, rating} = post;
 
     const handleSaveOnClick = (e) => {
         alert('Saved Successfully!');
@@ -36,6 +37,41 @@ const Book = ({post}) => {
             inventoryId: id
         });
       }
+
+      const [openRatingModal, setOpenRatingModal] = useState(false);
+        const handleRatingModalOpen = () => setOpenRatingModal(true);
+        const handleRatingModalClose = () => setOpenRatingModal(false);
+    
+      const handleRatingOnClick = (e) =>{
+          alert("Rating!")
+      }
+
+      const [ratingInfo, setRatingInfo] = useState([]);
+
+    let avgRating = 0;
+    let sumRating = 0;
+    let flag = 0;
+
+    useEffect(() => {
+        axios.get(`/api/Ratings?postId=${id}`)
+        .then(function (response){
+            // console.log('id');
+            // console.log(id);
+            // console.log(response.data.reverse().map(data=>data.rating));
+            setRatingInfo(response.data.reverse().map(data=>data.rating));
+        })
+        
+    }, [id])
+
+    for (let x in ratingInfo) {
+        sumRating += ratingInfo[x];
+        flag += 1;
+    }
+    if(sumRating>0){
+        avgRating = sumRating/flag;
+    } else if(sumRating === 0){
+        avgRating = sumRating;
+    }
 
     return (
             <Grid item xs={6} 
@@ -103,9 +139,19 @@ const Book = ({post}) => {
                                     <IconButton onClick={handleSaveOnClick} style={{color: 'white'}} aria-label="share">
                                         <CollectionsBookmarkRoundedIcon />
                                     </IconButton>
-                                    <IconButton style={{color: 'white'}} aria-label="rating">
-                                        <PostRating/>
+                                    <IconButton onClick={handleRatingModalOpen} style={{color: 'white'}} aria-label="rating">
+                                        <>
+                                            <Rating name="read-only" value={avgRating} readOnly />
+                                        </>
                                     </IconButton>
+
+                                    <RatingModal
+                                        rating = {rating}
+                                        id = {id}
+                                        singleUserInfo = {singleUserInfo}
+                                        openRatingModal = {openRatingModal}
+                                        handleRatingModalClose = {handleRatingModalClose}
+                                    ></RatingModal>
                                     <IconButton aria-label="comment">
                                     <a style={{textDecoration: "none"}} href={`/post/${id}`}>
                                                     <Button style={{color: 'white'}} variant="outlined"> <AddCommentIcon/> &nbsp;&nbsp;Add Comment</Button>

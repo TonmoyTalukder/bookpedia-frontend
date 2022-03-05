@@ -18,12 +18,12 @@ const UserPhotos = ({post}) => {
 
     const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category} = post;
     return (
-        <div>
-            <Grid item xs={12} sm={12} md={12} lg={12} 
-                className="specialCenter"
+        
+            <Grid  item xs={6} 
+               
             >
-                <Box style={{border: '1px solid  #575757', borderRadius: '5px', backgroundColor: ' #575757', textAlign: 'left', marginTop: '15px'}} sx={{ alignItems: 'center' }} >
-                    <Card sx={{ minWidth: 100, border: '1px solid #575757', borderRadius: '5px', backgroundColor: ' #575757' }}>
+                <Box style={{border: "0px solid red", backgroundColor: '#575757', textAlign: 'center', marginTop: '0px'}} sx={{ alignItems: 'center' }} >
+                    <Card sx={{ border: "0px solid yellow", minWidth: 100, boxShadow: 0, backgroundColor: ' #575757' }}>
                         
                         
                             {/* <img style={{width: '40%', height: '350px', marginRight: '10px'}} src={coverImageURL} alt="" /> */}
@@ -35,13 +35,13 @@ const UserPhotos = ({post}) => {
                                 
                                 {bookURL && <>
                                     <a style={{textDecoration: "none"}} href={`/post/${id}`}>
-                                    <img style={{width: '100%', height: '350px'}} src={coverImageURL} alt="" />
+                                    <img style={{width: '100%', height: '150px'}} src={coverImageURL} alt="" />
                                     </a>
 
                                 </>}
                                 {blogPost && <>
                                     <a style={{textDecoration: "none"}} href={`/post/${id}`}>
-                                    <img style={{width: '100%', height: '350px'}} src={coverImageURL} alt="" />
+                                    <img style={{width: '100%', height: '150px'}} src={coverImageURL} alt="" />
                                     </a>
 
                                 </>}
@@ -54,7 +54,6 @@ const UserPhotos = ({post}) => {
                 </Box>
            
             </Grid>
-        </div>
     );
 };
 

@@ -13,6 +13,12 @@ const Comment = ({postedComment}) => {
                         
                         <CardActions>
 
+                            {
+                                User.photoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={User.photoUrl} alt="" />
+                            }
+                            {
+                                !User.photoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
+                            }
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
                                 {User.displayName}

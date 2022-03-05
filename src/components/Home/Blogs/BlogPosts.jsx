@@ -35,6 +35,7 @@ const BlogPosts = () => {
                             spacing={{ xs: 2, md: 3 }} 
                             columns={{ xs: 12, sm: 12, md: 12 }}
                             className="specialCenter"
+                            justifyContent="center"
                         >
                             {
                                 posts.map(post => <BlogPost

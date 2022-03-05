@@ -10,7 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import Logo from '../../images/logo.png';
 import axios from 'axios';
-import { Button, Card, CardActions, Container, Grid } from '@mui/material';
+import { Button, Card, CardActions, Container, Divider, Grid } from '@mui/material';
 import Post from '../Home/Home/Posts/Post';
 import User from '../Home/Users/User';
 
@@ -64,6 +64,9 @@ const PostSearch = () => {
     const [posts, setPosts] = useState([]);
     const [allUserInfo, setAllUserInfo] = useState([]);
 
+    const [postsSearched, setPostsSearched] = useState([]);
+    const [allUserInfoSearched, setAllUserInfoSearched] = useState([]);
+
 
     useEffect(() => {
 
@@ -96,8 +99,8 @@ const handleSearch = event =>{
 
         const matchedUsers = allUserInfo.filter(user => user.displayName.toLowerCase().includes(searchText.toLowerCase()));
 
-        setPosts(matchedPosts);
-        setAllUserInfo(matchedUsers);
+        setPostsSearched(matchedPosts);
+        setAllUserInfoSearched(matchedUsers);
         console.log(matchedPosts);
     // }, [])    
     
@@ -136,6 +139,7 @@ function refreshPage() {
     <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
                     Users
                 </Typography>
+                <Divider/>
             <Box
                 direction="column"
                 alignItems="center"
@@ -149,7 +153,7 @@ function refreshPage() {
                     className="specialCenter"
                 >
                     {
-                        allUserInfo.slice(0,10).map(allUser => <User
+                        allUserInfoSearched.slice(0,10).map(allUser => <User
                             key = {allUser.id}
                             allUser = {allUser}
                         ></User>)
@@ -159,10 +163,11 @@ function refreshPage() {
     </div>
 
 
-<div style={{backgroundColor: '#262626', marginTop: '10px'}}> 
+<div style={{backgroundColor: '#262626', marginTop: '20px'}}> 
 <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
                     Posts
                 </Typography>
+                <Divider/>
             <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
                 <Container>
                 
@@ -177,7 +182,7 @@ function refreshPage() {
                             className="specialCenter"
                         >
                             {
-                                posts.map(post => <Post
+                                postsSearched.map(post => <Post
                                     key = {post.id}
                                     post = {post}
                                     // category={category}

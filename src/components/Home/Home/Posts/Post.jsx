@@ -95,7 +95,7 @@ const handleSaveOnClick = (e) => {
                             {/* <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}} src={singleUserInfo.photoURL} alt="User's Photo" /> */}
 
                             {
-                                singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={singleUserInfo.photoURL} alt="" />
+                                singleUserInfo.photoURL && <img style={{ borderRadius: '50%', padding: ''}}  src={singleUserInfo.photoURL} alt="" />
                             }
                             {
                                 !singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />

@@ -6,24 +6,24 @@ import DevelopedAppbar from './DevelopedAppbar';
 
 const Header = ({pots}) => {
     const{user} = useAuth();
-    const [allUserInfo, setAllUserInfo] = useState([]);
-    useEffect(()=>{
-        axios.get(`/api/users`)
-        .then(function (response){
-            setAllUserInfo(response.data.reverse().map(data=>data).filter(uu=>(uu.email === user.email)));
-        })
-    }, [])
+    // const [allUserInfo, setAllUserInfo] = useState([]);
+    // useEffect(()=>{
+    //     axios.get(`/api/users`)
+    //     .then(function (response){
+    //         setAllUserInfo(response.data.reverse().map(data=>data).filter(uu=>(uu.email === user.email)));
+    //     })
+    // }, [])
     return (
         <div>
             <Box style={{padding: '0%'}}>
-                    {
+                    {/* {
                         allUserInfo.slice(0,10).map(allUser => <DevelopedAppbar
                             key = {allUser.id}
                             allUser = {allUser}
                             posts
                         ></DevelopedAppbar>)
-                    }
-                {/* <DevelopedAppbar/> */}
+                    } */}
+                <DevelopedAppbar/>
             </Box>
         </div>
     );

@@ -23,7 +23,7 @@ const Saved = () => {
     if(isLoading){return <CircularProgress/>}
 
     return (
-        <div>
+        <div style={{height: '100vh', backgroundColor: '#262626'}}>
             <Header/>
             <Box variant="scrollable" style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
                 <Container>

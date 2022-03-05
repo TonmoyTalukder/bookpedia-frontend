@@ -1,4 +1,4 @@
-import { Box, Card, CardActions, CardContent, Container, Grid, ListItemIcon, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Container, Grid, ListItemIcon, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import Header from '../../Shared/Header/Header';
@@ -9,9 +9,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import EditModal from './EditModal';
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
 import Home from '../Home/Home';
 import Post from '../Home/Posts/Post';
 import UserPhotos from './UserPhotos';
+import BookModal from '../Home/Modal/BookModal';
+import BlogModal from '../Home/Modal/BlogModal';
 const Dashboard = () => {
     const{user} = useAuth();
 
@@ -103,13 +107,21 @@ const Dashboard = () => {
         
     }, [])
 
+    const [openBlogModal, setOpenBlogModal] = useState(false);
+    const handleBlogModalOpen = () => setOpenBlogModal(true);
+    const handleBlogModalClose = () => setOpenBlogModal(false);
+
+    const [openBookModal, setOpenBookModal] = useState(false);
+    const handleBookModalOpen = () => setOpenBookModal(true);
+    const handleBookModalClose = () => setOpenBookModal(false);
+
     return (
         <div style={{ backgroundColor: '#262626', height: '100vh'}}>
             <Header/>
             <Box sx={{ padding: '5px', backgroundColor: '#262626'}}>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Card sx={{ minWidth: '100%', border: '1px solid  #575757', borderRadius: '5px', backgroundColor: ' #575757', marginLeft: '10%', marginTop: '5%' }}>
+                        <Card sx={{ minWidth: '250px', border: '1px solid #575757', borderRadius: '5px', backgroundColor: ' #575757', marginLeft: '10%', marginTop: '5%' }}>
                             
                             <CardActions>
                                 {/* {user.photoURL && <img style={{width: '45px', height: '45px', border: '1px solid red', borderRadius: '50%', padding: '25px', margin: 'auto'}} src={user.photoURL} alt="User's Photo" />} */}
@@ -185,8 +197,47 @@ const Dashboard = () => {
                     </Grid>
 
                     <Grid item xs={6}>
+                
+                    { newSingleUser.email===user.email && <Box style={{border: '1px solid #575757', borderRadius: '5px', backgroundColor: '#262626', padding: '20px', margin: '18px', color: 'white', alignItems:"center", justifyContent:"center"}}  >
+
+                        <Card sx={{ minWidth: 200, border: '1px solid  #575757', borderRadius: '5px', backgroundColor: ' #575757' }}>
+                            <CardActions>
+                                <img style={{ width: '45px', height: '45px', borderRadius: '50%', padding: '25px' }} src={user.photoURL} alt="User's Photo" />
+                                <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                    What's in your mind {user.displayName}?
+                                </Typography>
+                            </CardActions>
+                            <CardActions style={{ justifyContent: 'center' }}>
+                                <Button variant="text" onClick={handleBookModalOpen} style={{ borderBottom: '2px', color: 'white' }}>
+                                    <Typography>
+                                        Upload a Book?<br /><MenuBookRoundedIcon />
+                                    </Typography>
+                                </Button>
+
+                                <BookModal
+                                    singleUser={singleUser}
+                                    openBookModal = {openBookModal}
+                                    handleBookModalClose = {handleBookModalClose}
+                                ></BookModal>
+
+                                <span style={{ fontSize: 65, color: 'white' }}>|</span>
+                                <Button variant="text" onClick={handleBlogModalOpen} style={{ borderBottom: '2px', color: 'white' }}>
+                                    <Typography>
+                                        Write a blog?<br /><RssFeedRoundedIcon />
+                                    </Typography>
+                                </Button>
+                                
+                                <BlogModal
+                                    singleUser={singleUser}
+                                    openBlogModal = {openBlogModal}
+                                    handleBlogModalClose = {handleBlogModalClose}
+                                ></BlogModal>
+                            </CardActions>
+                        </Card>
+                    </Box>}
+
                     <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
-                <Container>
+                    <Container>
                 
                     <Box
                         direction="column"
@@ -221,8 +272,23 @@ const Dashboard = () => {
                                     direction="column"
                                     alignItems="center"
                                     justifyContent="center"
+                                    sx={{border: '1px solid #575757', borderRadius: '5px',backgroundColor: '#575757'}}
                                 >
-                                    <Grid container 
+
+                                    <Grid container rowSpacing={0} columnSpacing={{ xs: 0, sm: 0, md: 0 }} justifyContent="center">
+                                    {
+                                            posts.slice(0,10).map(post => <UserPhotos
+                                                key = {post.id}
+                                                post = {post}
+                                            ></UserPhotos>)
+                                        }
+                                                                        
+                                    {/* <Grid item xs={6}>
+                                    1
+                                    </Grid> */}
+                                    
+                                    </Grid>
+                                    {/* <Grid container 
                                         spacing={{ xs: 3, md: 3 }} 
                                         columns={{ xs: 6, sm: 6, md: 6 }}
                                         className="specialCenter"
@@ -233,7 +299,7 @@ const Dashboard = () => {
                                                 post = {post}
                                             ></UserPhotos>)
                                         }
-                                    </Grid>
+                                    </Grid> */}
                                 </Box>
                 </Container>
             </Box>

@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -37,6 +37,7 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import useAuth from '../../../hooks/useAuth';
+import axios from 'axios';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -45,8 +46,18 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-const DevelopedAppbar = ({allUser}) => {
-    const{id, photoUrl, displayName, email} = allUser;
+const DevelopedAppbar = () => {
+
+    const [allUserInfo, setAllUserInfo] = useState([]);
+    useEffect(()=>{
+        axios.get(`/api/users`)
+        .then(function (response){
+            setAllUserInfo(response.data.reverse().map(data=>data).filter(uu=>(uu.email === user.email))[0]);
+            // console.log(response.data.reverse().map(data=>data).filter(uu=>(uu.email === user.email))[0]);
+        })
+    }, [])
+
+    // const{id, photoUrl, displayName, email} = allUser;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -214,7 +225,7 @@ const DevelopedAppbar = ({allUser}) => {
                                     <MenuItem>
 
 
-                                        <NavLink style={{textDecoration: 'none', color: 'white'}} to={`/user/${id}`}>
+                                        <NavLink style={{textDecoration: 'none', color: 'white'}} to={`/user/${allUserInfo.id}`}>
                                             <ListItemIcon>
                                                 <Avatar /> Profile
                                             </ListItemIcon>
