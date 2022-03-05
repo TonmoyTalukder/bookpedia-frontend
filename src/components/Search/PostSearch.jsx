@@ -153,7 +153,7 @@ function refreshPage() {
                     className="specialCenter"
                 >
                     {
-                        allUserInfoSearched.slice(0,10).map(allUser => <User
+                        allUserInfoSearched.map(allUser => <User
                             key = {allUser.id}
                             allUser = {allUser}
                         ></User>)
