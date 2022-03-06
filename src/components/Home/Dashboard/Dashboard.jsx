@@ -11,6 +11,10 @@ import EditModal from './EditModal';
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import WcIcon from '@mui/icons-material/Wc';
+
 import Home from '../Home/Home';
 import Post from '../Home/Posts/Post';
 import UserPhotos from './UserPhotos';
@@ -144,15 +148,38 @@ const Dashboard = () => {
                                         </Typography>
                                     </ListItemIcon>
                                     <br />
-                                    <ListItemIcon>
-                                        <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                    { newSingleUser.email===user.email && <ListItemIcon>
+                                        <Typography sx={{ fontSize: 16, color: 'white' }} color="text.secondary" gutterBottom>
                                             <EmailRoundedIcon/> {newSingleUser.email}
                                         </Typography>
-                                    </ListItemIcon>
+                                    </ListItemIcon>}
                                     <br />
                                     { newSingleUser.email===user.email && <>
+
+
                                     <ListItemIcon>
-                                        {newSingleUser.date && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                        {newSingleUser.work && <Typography sx={{ fontSize: 16, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <BusinessCenterIcon/> Works at {newSingleUser.work}
+                                        </Typography>}
+                                        {!newSingleUser.work && <Typography sx={{ fontSize: 16, color: '#E9E9E9' }} color="text.secondary" gutterBottom>
+                                            <BusinessCenterIcon/> <span>Update where do you work...</span>
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
+
+                                    <ListItemIcon>
+                                        {newSingleUser.city && <Typography sx={{ fontSize: 16, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <HomeWorkIcon/> Lives in {newSingleUser.city}
+                                        </Typography>}
+                                        {!newSingleUser.city && <Typography sx={{ fontSize: 16, color: '#E9E9E9' }} color="text.secondary" gutterBottom>
+                                            <HomeWorkIcon/> <span>Update where do you live...</span>
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
+                                    <ListItemIcon>
+                                        {newSingleUser.date && <Typography sx={{ fontSize: 16, color: 'white' }} color="text.secondary" gutterBottom>
                                             <CakeRoundedIcon/> {newSingleUser.date}
                                         </Typography>}
                                         {!newSingleUser.date && <Typography sx={{ fontSize: 16, color: '#E9E9E9' }} color="text.secondary" gutterBottom>
@@ -160,6 +187,68 @@ const Dashboard = () => {
                                         </Typography>}
                                     </ListItemIcon>
                                     <br />
+
+                                    <ListItemIcon>
+                                        {newSingleUser.gender && <Typography sx={{ fontSize: 16, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <WcIcon/> {newSingleUser.gender}
+                                        </Typography>}
+                                        {!newSingleUser.gender && <Typography sx={{ fontSize: 16, color: '#E9E9E9' }} color="text.secondary" gutterBottom>
+                                            <WcIcon/> <span>Update your sexual orientation...</span>
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
+                                    
+                                    <ListItemIcon>
+                                        <button onClick={handleEditProfileOpen} style={{backgroundColor: 'transparent', border: '0px'}}>
+                                            <Typography sx={{ fontSize: 16, color: '#E9E9E9' }} gutterBottom>
+                                                <DriveFileRenameOutlineRoundedIcon/> Edit Details...
+                                            </Typography>
+                                        </button>
+                                        <EditModal
+                                            
+                                            databaseUser={databaseUser}
+                                            singleUser={newSingleUser}
+                                            openEditProfile = {openEditProfile}
+                                            handleEditProfileClose = {handleEditProfileClose}
+
+                                        ></EditModal>
+
+                                        
+                                    </ListItemIcon>
+                                    </>}
+                                    { !newSingleUser.email===user.email && <>
+
+
+                                    <ListItemIcon>
+                                        {newSingleUser.work && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <BusinessCenterIcon/> Works at {newSingleUser.work}
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
+
+                                    <ListItemIcon>
+                                        {newSingleUser.city && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <HomeWorkIcon/> Lives in {newSingleUser.city}
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
+                                    <ListItemIcon>
+                                        {newSingleUser.date && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <CakeRoundedIcon/> {newSingleUser.date}
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
+                                    <ListItemIcon>
+                                        {newSingleUser.gender && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                            <WcIcon/> {newSingleUser.gender}
+                                        </Typography>}
+                                    </ListItemIcon>
+                                    <br />
+
                                     
                                     <ListItemIcon>
                                         <button onClick={handleEditProfileOpen} style={{backgroundColor: 'transparent', border: '0px'}}>

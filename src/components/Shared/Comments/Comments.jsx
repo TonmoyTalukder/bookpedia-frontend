@@ -56,7 +56,7 @@ const Comments = ({singlePostId}) => {
             comment: commentInfo.comment,
         });
         // console.log("After Put", postInfo);
-              
+        window.location.reload(false);
         e.preventDefault();
     }
 

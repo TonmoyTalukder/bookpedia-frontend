@@ -8,18 +8,22 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import useUserInfo from '../../../../hooks/useUserInfo';
 import PostRating from '../Rating/PostRating';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import CategoryIcon from '@mui/icons-material/Category';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
 import axios from 'axios';
 import RatingModal from '../Modal/RatingModal';
+import { ConnectingAirportsOutlined } from '@mui/icons-material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 
 const Post = ({post}) => {
     // const{user} = useAuth();
     const{singleUserInfo} = useUserInfo();
 
-    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category, rating} = post;
+    const{id, type, postTitle, bookURL, authorName, authorPhotoUrl, blogPost, coverImageURL, category, rating} = post;
 
 //    console.log(authorName);
 
@@ -82,6 +86,61 @@ const handleSaveOnClick = (e) => {
       alert("Rating!")
   }
 
+  let [like, setLike] = useState(0);
+
+  const [likeInfo, setLikeInfo] = useState([]);
+  const [likeId, setLikeId] = useState([]);
+
+  useEffect(() => {
+    axios.get(`/api/likes?userId=${singleUserInfo.id}&&postId=${id}`)
+    .then(function (response){
+        
+        setLikeInfo(response.data.map(data=>data).map(data=>data.like));
+        setLikeId(response.data.map(data=>data).map(data=>data.id));
+        console.log(response.data.map(data=>data).map(data=>data.id));
+       
+    })
+}, [id, singleUserInfo.id])
+
+  const handleLike = (e) =>{
+
+    console.log('Like API Called for', likeId[0]);
+
+    axios.post(`/api/likes`,{
+        like: 1,
+        UserId: singleUserInfo.id,
+        inventoryId: id
+    });
+    setTimeout("location.href = '/home'",1500);   
+    // window.location.reload(false);        
+  }
+
+  const handleDisLike = (e) =>{
+
+    console.log('Dislike API Called for', likeId[0]);
+
+    axios.delete(`/api/likes/${likeId[0]}`);
+    setTimeout("location.href = '/home'",1500);         
+    // window.location.reload(false);      
+    
+  }
+
+
+  const [allLikeInfo, setAllLikeInfo] = useState([]);
+
+  let sumLikes = 0;
+  
+  useEffect(() => {
+      axios.get(`/api/likes?postId=${id}`)
+      .then(function (response){
+          setAllLikeInfo(response.data.reverse().map(data=>data.like));
+      })
+      
+  }, [id])
+  
+  for (let x in allLikeInfo) {
+      sumLikes += allLikeInfo[x];
+    }
 
     return (
         <div>
@@ -95,10 +154,10 @@ const handleSaveOnClick = (e) => {
                             {/* <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}} src={singleUserInfo.photoURL} alt="User's Photo" /> */}
 
                             {
-                                singleUserInfo.photoURL && <img style={{ borderRadius: '50%', padding: ''}}  src={singleUserInfo.photoURL} alt="" />
+                                authorPhotoUrl && <img style={{ width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={authorPhotoUrl} alt="" />
                             }
                             {
-                                !singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
+                                !authorPhotoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
                             }
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
@@ -110,7 +169,7 @@ const handleSaveOnClick = (e) => {
                             {/* <span style={{ fontSize: 320, color: 'white' }}>|</span> */}
                              
                             <Box style={{width: '60%'}}>
-                                <Typography sx={{ fontSize: 35, color: 'white' }} color="text.secondary" gutterBottom>
+                                <Typography sx={{ fontSize: 25, color: 'white' }} color="text.secondary" gutterBottom>
                                     {postTitle}
                                 </Typography>
                                 <br />
@@ -145,10 +204,24 @@ const handleSaveOnClick = (e) => {
                                 <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
                                       <CategoryIcon/>&nbsp;Category: {category}
                                 </Typography>
-                                <CardActions style={{justifyContent: 'center'}}>
-                                    <IconButton style={{color: 'white'}} aria-label="add to favorites">
-                                        <FavoriteIcon />
+
+                                <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
+                                      <FavoriteIcon/>&nbsp;Like: {sumLikes}
+                                </Typography>
+
+                                <CardActions style={{justifyContent: 'left'}}>
+                                    <IconButton onClick={handleLike} style={{color: 'white'}} aria-label="add to favorites">
+                                        <ThumbUpIcon/>
                                     </IconButton>
+
+                                    <IconButton onClick={handleDisLike} style={{color: 'white'}} aria-label="add to favorites">
+                                        <ThumbDownAltIcon/>
+                                    </IconButton>
+                                </CardActions>
+
+                                <CardActions style={{justifyContent: 'center'}}>
+
+
 
                                     <IconButton onClick={handleSaveOnClick} style={{color: 'white'}} aria-label="share">
                                         <CollectionsBookmarkRoundedIcon />
@@ -156,7 +229,7 @@ const handleSaveOnClick = (e) => {
 
                                     <IconButton onClick={handleRatingModalOpen} style={{color: 'white'}} aria-label="rating">
                                         <>
-                                            <Rating name="read-only" value={avgRating} readOnly />
+                                            <Rating name="read-only" value={avgRating} precision={0.1} readOnly />
                                         </>
                                     </IconButton>
 

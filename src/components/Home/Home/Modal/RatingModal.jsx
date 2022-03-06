@@ -24,24 +24,25 @@ const RatingModal = ({openRatingModal, handleRatingModalClose, rating, id, singl
     // console.log(singleUserInfo.id);
 
     const [ratingInfo, setRatingInfo] = useState([]);
-    const [ratingInfoCheck, setRatingInfoCheck] = useState([]);
+    const [ratingId, setRatingId] = useState([]);
 
     useEffect(() => {
         axios.get(`/api/Ratings?userId=${singleUserInfo.id}&&postId=${id}`)
         .then(function (response){
             // console.log(response.data.reverse().map(data=>data).filter(uu=>(uu.UserId === singleUserInfo.id)).rating);
-            console.log("SingleUserInfo");
-            console.log(singleUserInfo.id);
+            // console.log("SingleUserInfo");
+            // console.log(singleUserInfo.id);
 
-            console.log('id');
-            console.log(id);
+            // console.log('id');
+            // console.log(id);
 
-            console.log(response.data);
-            console.log(response.data.map(data=>data).map(data=>data.rating));
+            // console.log(response.data);
+            // console.log(response.data.map(data=>data).map(data=>data.rating));
             setRatingInfo(response.data.map(data=>data).map(data=>data.rating));
+            setRatingId(response.data.map(data=>data).map(data=>data.id));
             // setRatingInfoCheck(response.data.reverse().map(data=>data).filter(uu=>(uu.UserId === singleUserInfo.id)));
-            console.log('ratingInfo.rating');
-            console.log(ratingInfo[0]);
+            // console.log('ratingInfo.rating');
+            // console.log(ratingInfo[0]);
             // console.log('ratingInfoCheck');
             // console.log(ratingInfoCheck);
         })
@@ -58,7 +59,7 @@ const RatingModal = ({openRatingModal, handleRatingModalClose, rating, id, singl
             inventoryId: id
           }
     
-          console.log(ratingShow);
+          // console.log(ratingShow);
 
         // useEffect(() => {
             // axios.post(`/api/Ratings`,{
@@ -98,7 +99,13 @@ const RatingModal = ({openRatingModal, handleRatingModalClose, rating, id, singl
         // }, [])
 
         handleRatingModalClose();
+        setTimeout("location.href = '/home'",1500);     
         e.preventDefault();
+    }
+
+    const handleClearRating = (e) =>{
+       axios.delete(`/api/Ratings/${ratingId[0]}`);
+       window.location.reload(false);
     }
     return (
         <Modal
@@ -114,14 +121,22 @@ const RatingModal = ({openRatingModal, handleRatingModalClose, rating, id, singl
       >
         <Fade in={openRatingModal}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
+            {/* <Typography id="transition-modal-title" variant="h6" component="h2">
               Hello
-            </Typography>
+            </Typography> */}
             {
                 ratingInfo.length > 0 ?
                 
                 <>
-                    Your rating is: {ratingInfo[0]}
+                    Your rating is:
+
+                    <>
+                        <Rating name="read-only" value={ratingInfo[0]} precision={0.1} readOnly />
+                    </>
+
+                    <>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}><Button onClick={handleClearRating} style={{marginTop: '5px', backgroundColor: 'red'}} variant="contained">Clear Rating</Button></Box>
+                    </>
                 </>
                 :
                 <>
@@ -139,12 +154,12 @@ const RatingModal = ({openRatingModal, handleRatingModalClose, rating, id, singl
                             console.log(newValue);
                             }}
                             name="half-rating" 
-                            precision={0.5} />
+                            precision={0.1} />
                         </Stack>
 
-                        <Button onClick={handleRatingPost} >Rate</Button>
+                        {/* <Button onClick={handleRatingPost} >Rate</Button> */}
 
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}><Button type="submit" style={{marginTop: '5px'}} variant="contained">Post</Button></Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}><Button type="submit" style={{marginTop: '5px'}} variant="contained">Confirm</Button></Box>
                     </form>
                 </>
             }

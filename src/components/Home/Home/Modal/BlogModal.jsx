@@ -56,6 +56,7 @@ const BlogModal = ({openBlogModal, handleBlogModalClose}) => {
 
         axios.post(`/api/inventories/`,{
             authorName: singleUserInfo.displayName,
+            authorPhotoUrl: singleUserInfo.photoUrl,
             email: singleUserInfo.email,
             postTitle: postInfo.postTitle,
             type: 'blog',
@@ -64,8 +65,9 @@ const BlogModal = ({openBlogModal, handleBlogModalClose}) => {
             category: postInfo.category
         });
         // console.log("After Put", postInfo);
-              
         handleBlogModalClose();
+        // window.location.reload(false); 
+        setTimeout("location.href = '/home'",5000);     
         e.preventDefault();
     }
 

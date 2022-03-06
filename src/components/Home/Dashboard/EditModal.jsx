@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
+import { Button, FormControl, InputLabel, NativeSelect } from '@mui/material';
 import useAuth from '../../../hooks/useAuth';
 import { useState } from 'react';
 import axios from 'axios';
@@ -23,9 +23,9 @@ const style = {
 };
 
 const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
-    const {id, displayName, email, photoUrl, date} = singleUser;
+    const {id, displayName, email, photoUrl, date, gender, city, work} = singleUser;
 
-    const initialInfo = { userName: displayName, userEmail: email, photoURL: photoUrl, birthday: date };
+    const initialInfo = { userName: displayName, userEmail: email, photoURL: photoUrl, birthday: date, work: work, city: city, gender: gender };
 
 
     // console.log('initial info ',initialInfo);
@@ -77,7 +77,10 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
                   displayName: userInfo.userName,
                   email: email,
                   photoUrl: userInfo.photoURL,
-                  date: userInfo.birthday
+                  date: userInfo.birthday,
+                  city: userInfo.city,
+                  gender: userInfo.gender,
+                  work: userInfo.work
               });
               // console.log("After Put", userInfo);
 
@@ -93,9 +96,10 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
               //   body: JSON.stringify(userInfo)
               // })
               //   .then()
-              
+              // console.log(window.location.href);
 
         handleEditProfileClose();
+        setTimeout(`location.href = '${window.location.href}'`,1000);     
         e.preventDefault();
     }
     return (
@@ -172,9 +176,57 @@ const EditModal = ({openEditProfile, handleEditProfileClose, singleUser}) => {
                     id="outlined-size-small"
                     name = "birthday"
                     onBlur = {handleOnBlur}
+                    type = "date"
                     defaultValue={date}
                     size="small"
                     label="Birthday"
+                    focused
+                />
+                <FormControl
+                    name = "category"
+                    sx={{width: '90%', m:1}}
+                >
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">Gender</InputLabel>
+                
+                  <NativeSelect
+                      defaultValue={'null'}
+                      inputProps={{
+                          name: 'gender',
+                          id: 'uncontrolled-native',
+                      }}
+                      label="Gender"
+                      onBlur = {handleOnBlur}
+                      >
+                      <option value={'null'}> Null </option>
+                      <option value={'Male'}>Male</option>
+                      <option value={'Female'}>Female</option>
+                      <option value={'Others'}>Others</option>
+                  </NativeSelect>
+                </FormControl>
+
+                <TextField
+                    // label="Size"
+                    // disabled
+                    sx={{width: '90%', m:1}}
+                    id="outlined-size-small"
+                    name = "city"
+                    onBlur = {handleOnBlur}
+                    defaultValue={city}
+                    size="small"
+                    label="City You Live in"
+                    focused
+                />
+
+                <TextField
+                    // label="Size"
+                    // disabled
+                    sx={{width: '90%', m:1}}
+                    id="outlined-size-small"
+                    name = "work"
+                    onBlur = {handleOnBlur}
+                    defaultValue={work}
+                    size="small"
+                    label="Where do you work?"
                     focused
                 />
                 

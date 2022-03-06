@@ -1,0 +1,22 @@
+TO DO
+______________
+
+1. Space as like as facebook group
+
+2. Follow user
+
+3. Get the posts from the users whom I Follow
+
+4. Delete rating
+
+5. Work with Like Button
+
+6. Reply to the comment
+
+7. Like button in comment and reply section
+
+8. Add Payment System
+
+9. Update - update user info fields
+
+10. Get all users with a search option (See More can be apply from the core search page)

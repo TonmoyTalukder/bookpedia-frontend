@@ -117,82 +117,88 @@ function refreshPage() {
                 </a>
             </span>
             <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar sx={{justifyContent: 'center', backgroundColor: 'black'}}>
-          
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search on BookPedia"
-            //   onClick={refreshPage}
-              onChange={handleSearch} 
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-        </Toolbar>
-      </AppBar>
-    </Box>
-
-    <div>
-    <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                    Users
-                </Typography>
-                <Divider/>
-            <Box
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                style={{marginTop: '5px', marginLeft: '30%'}}
-            >
-                
-                <Grid container 
-                    spacing={{ xs: 3, md: 3 }} 
-                    columns={{ xs: 6, sm: 6, md: 6 }}
-                    className="specialCenter"
-                >
-                    {
-                        allUserInfoSearched.map(allUser => <User
-                            key = {allUser.id}
-                            allUser = {allUser}
-                        ></User>)
-                    }
-                </Grid>
+              <AppBar position="static">
+                <Toolbar sx={{justifyContent: 'center', backgroundColor: 'black'}}>
+                  
+                  <Search>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Search on BookPedia"
+                    //   onClick={refreshPage}
+                      onChange={handleSearch} 
+                      inputProps={{ 'aria-label': 'search' }}
+                    />
+                  </Search>
+                </Toolbar>
+              </AppBar>
             </Box>
-    </div>
+            <Box style={{overflowY: 'scroll'}}>
+            <Grid style={{height: '100vh'}} container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+              <Grid item xs={6}>
+                <div style={{backgroundColor: '#262626', marginTop: '20px'}}>
+                  <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                    Users
+                  </Typography>
+                  <Divider/>
+                  <Box
+                      direction="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      style={{marginTop: '5px', marginLeft: '30%'}}
+                  >
+                
+                    <Grid container 
+                        spacing={{ xs: 3, md: 3 }} 
+                        columns={{ xs: 6, sm: 6, md: 6 }}
+                        className="specialCenter"
+                    >
+                        {
+                            allUserInfoSearched.map(allUser => <User
+                                key = {allUser.id}
+                                allUser = {allUser}
+                            ></User>)
+                        }
+                    </Grid>
+                  </Box>
+                </div>
+            </Grid>
 
-
-<div style={{backgroundColor: '#262626', marginTop: '20px'}}> 
-<Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                    Posts
+            <Grid item xs={6}>
+              <div style={{backgroundColor: '#262626', marginTop: '20px'}}> 
+                <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                  Posts
                 </Typography>
                 <Divider/>
-            <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
-                <Container>
-                
+                <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
+                  <Container>
                     <Box
                         direction="column"
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <Grid container 
-                            spacing={{ xs: 2, md: 3 }} 
-                            columns={{ xs: 12, sm: 12, md: 12 }}
-                            className="specialCenter"
-                        >
-                            {
-                                postsSearched.map(post => <Post
-                                    key = {post.id}
-                                    post = {post}
-                                    // category={category}
-                                ></Post>)
-                            }
-                        </Grid>
+                      <Grid container 
+                          spacing={{ xs: 2, md: 3 }} 
+                          columns={{ xs: 12, sm: 12, md: 12 }}
+                          className="specialCenter"
+                      >
+                          {
+                              postsSearched.map(post => <Post
+                                  key = {post.id}
+                                  post = {post}
+                                  // category={category}
+                              ></Post>)
+                          }
+                      </Grid>
                     </Box>
-                </Container>
+                  </Container>
+                </Box>
+              </div>    
+            </Grid>
+          </Grid>
             </Box>
-        </div>    
+            
         </div>
     );
 };

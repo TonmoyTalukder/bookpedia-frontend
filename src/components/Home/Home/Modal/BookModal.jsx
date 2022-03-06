@@ -55,6 +55,7 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
 
         axios.post(`/api/inventories/`,{
             authorName: singleUserInfo.displayName,
+            authorPhotoUrl: singleUserInfo.photoUrl,
             email: singleUserInfo.email,
             postTitle: postInfo.postTitle,
             type: 'book',
@@ -63,8 +64,8 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
             category: postInfo.category
         });
         // console.log("After Put", postInfo);
-              
         handleBookModalClose();
+        setTimeout("location.href = '/home'",5000);     
         e.preventDefault();
     }
 
@@ -106,7 +107,6 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                     focused
                 /> */}
                 <TextField
-                    label="Size"
                     disabled
                     sx={{width: '90%', m:1}}
                     id="outlined-size-small"
@@ -171,31 +171,21 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                     sx={{width: '90%', m:1}}
                 >
                 <InputLabel variant="standard" htmlFor="uncontrolled-native">Category</InputLabel>
-                {/* <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={category}
-                    label="Category"
-                    onChange={handleCategoryChange}
-                >
-                    <MenuItem value={'History'}>History</MenuItem>
-                    <MenuItem value={'Science'}>Science</MenuItem>
-                    <MenuItem value={'Nature'}>Nature</MenuItem>
-                </Select> */}
-                <NativeSelect
-                    defaultValue={'null'}
-                    inputProps={{
-                        name: 'category',
-                        id: 'uncontrolled-native',
-                    }}
-                    label="Category"
-                    onBlur = {handleOnBlur}
-                    >
-                    <option value={'null'}> Null </option>
-                    <option value={'History'}>History</option>
-                    <option value={'Science'}>Science</option>
-                    <option value={'Nature'}>Nature</option>
-                </NativeSelect>
+                
+                  <NativeSelect
+                      defaultValue={'null'}
+                      inputProps={{
+                          name: 'category',
+                          id: 'uncontrolled-native',
+                      }}
+                      label="Category"
+                      onBlur = {handleOnBlur}
+                      >
+                      <option value={'null'}> Null </option>
+                      <option value={'History'}>History</option>
+                      <option value={'Science'}>Science</option>
+                      <option value={'Nature'}>Nature</option>
+                  </NativeSelect>
                 </FormControl>
                 
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}><Button type="submit" style={{marginTop: '5px'}} variant="contained">Post</Button></Box>
