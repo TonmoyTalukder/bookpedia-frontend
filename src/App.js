@@ -27,6 +27,7 @@ import Nature from './components/Shared/Category/Nature';
 import useUserInfo from './hooks/useUserInfo';
 import PostSearch from './components/Search/PostSearch';
 import Search from '@mui/icons-material/Search';
+import NotFound from './components/NotFound/NotFound';
 
 
 
@@ -133,6 +134,9 @@ function App() {
           <PublicRoute exact path='/register'>
               <Register></Register>
           </PublicRoute>
+          <Route path="/*">
+              <NotFound></NotFound>
+          </Route>
         </Router>
       </AuthProvider>
     </div>
