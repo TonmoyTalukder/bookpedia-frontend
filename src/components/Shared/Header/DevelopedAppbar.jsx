@@ -141,10 +141,14 @@ const DevelopedAppbar = () => {
                         {
                                 user?.email ?
                                     <Button variant="text" style={{borderBottom: '2px', color: 'white'}}>
-                                        <span>
+                                        {user.photoURL && <span>
                                             <img style={{width: '40px', height: '50px', borderRadius: '50% 20% / 10% 40%'}} src={user.photoURL} alt="" />
                                             {/* <img style={{width: '45px', height: '45px', borderRadius: '50%'}} src={user.photoURL} alt="" /> */}
-                                        </span>
+                                        </span>}
+                                        {!user.photoURL && <span>
+                                            <img style={{width: '40px', height: '50px', borderRadius: '50% 20% / 10% 40%'}} src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
+                                            {/* <img style={{width: '45px', height: '45px', borderRadius: '50%'}} src={user.photoURL} alt="" /> */}
+                                        </span>}
                                         <span>&emsp;{user.displayName}</span>
                                     </Button>
                                 :

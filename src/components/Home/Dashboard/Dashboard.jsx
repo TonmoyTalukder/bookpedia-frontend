@@ -15,13 +15,19 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import WcIcon from '@mui/icons-material/Wc';
 
+import StarIcon from '@mui/icons-material/Star';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+
 import Home from '../Home/Home';
 import Post from '../Home/Posts/Post';
 import UserPhotos from './UserPhotos';
 import BookModal from '../Home/Modal/BookModal';
 import BlogModal from '../Home/Modal/BlogModal';
+import useUserInfo from '../../../hooks/useUserInfo';
+import FollowingUsers from './FollowingUsers';
 const Dashboard = () => {
     const{user} = useAuth();
+    const{singleUserInfo} = useUserInfo();
 
     const {userId} = useParams();
 
@@ -35,6 +41,7 @@ const Dashboard = () => {
             .then(function (response){
                 // setDatabaseUser(response.data.map(data=>data.email));
                 setSingleUser(response.data.map(data=>data.email).find(uu=>(uu === user.email)));
+                console.log(response.data.map(data=>data.email).find(uu=>(uu === user.email)));
             })
 
             // console.log(databaseUser);
@@ -119,6 +126,51 @@ const Dashboard = () => {
     const handleBookModalOpen = () => setOpenBookModal(true);
     const handleBookModalClose = () => setOpenBookModal(false);
 
+    // Follow
+
+    const [allFollowInfo, setAllFollowInfo] = useState([]);
+    const [followInfo, setFollowInfo] = useState([]);
+    const [followId, setFollowId] = useState([]);
+
+
+  useEffect(() => {
+    axios.get(`/api/foollows?userId=${singleUserInfo.id}`)
+    .then(function (response){
+        
+        // console.log(response.data.map(data=>data).map(data=>data.like).length);
+        setFollowInfo(response.data.map(data=>data).map(data=>data.follow)[0]);
+        console.log(response.data.map(data=>data).map(data=>data.id)[0]);
+        setFollowId(response.data.map(data=>data).map(data=>data.id)[0]);
+        setAllFollowInfo(response.data.map(data=>data).map(data=>data));
+       
+    })
+}, [singleUserInfo.id])
+
+    const handleFollow = (e) =>{
+
+        console.log('Follow API Called');
+    
+        axios.post(`/api/foollows`,{
+            UserId: singleUserInfo.id,
+            followingUserId: newSingleUser.id,
+            followingUserDisplayName: newSingleUser.displayName,
+            followingUserEmail: newSingleUser.email,
+            followingUserPhotoURL: newSingleUser.photoUrl,
+            follow: 1
+        });
+        setTimeout(`location.href = '${window.location.href}'`,1000);  
+      }
+
+    const handleUnFollow = (e) =>{
+
+        console.log('Unfollow API Called for followId:', followId);
+
+        axios.delete(`/api/foollows/${followId}`);
+        setTimeout(`location.href = '${window.location.href}'`,1000);       
+    // window.location.reload(false);      
+    
+    }
+
     return (
         <div style={{ backgroundColor: '#262626', height: '100vh'}}>
             <Header/>
@@ -132,7 +184,7 @@ const Dashboard = () => {
 
                                 {/* <img style={{width: '100px', height: '100px', border: '1px solid red', borderRadius: '50%', padding: '', margin: 'auto'}} src={singleUser.photoUrl} alt="User's Photo" /> */}
 
-                                {newSingleUser.photoUrl && <img style={{width: '100px', height: '100px', border: '1px solid red', borderRadius: '50%', padding: '', margin: 'auto'}} src={singleUser.photoUrl} alt="User's Photo" />}
+                                {newSingleUser.photoUrl && <img style={{width: '100px', height: '100px', borderRadius: '50%', padding: '', margin: 'auto'}} src={newSingleUser.photoUrl} alt="User's Photo" />}
 
                                 {!newSingleUser.photoUrl && <img style={{width: '100px', height: '100px', border: '1px solid red', borderRadius: '50%', padding: '', margin: 'auto'}} src='http://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png' alt="User's Photo" />}
 
@@ -217,7 +269,7 @@ const Dashboard = () => {
                                         
                                     </ListItemIcon>
                                     </>}
-                                    { !newSingleUser.email===user.email && <>
+                                    { newSingleUser.email!==user.email && <>
 
 
                                     <ListItemIcon>
@@ -249,24 +301,14 @@ const Dashboard = () => {
                                     </ListItemIcon>
                                     <br />
 
-                                    
-                                    <ListItemIcon>
-                                        <button onClick={handleEditProfileOpen} style={{backgroundColor: 'transparent', border: '0px'}}>
-                                            <Typography sx={{ fontSize: 16, color: '#E9E9E9' }} gutterBottom>
-                                                <DriveFileRenameOutlineRoundedIcon/> Edit Details...
-                                            </Typography>
-                                        </button>
-                                        <EditModal
-                                            
-                                            databaseUser={databaseUser}
-                                            singleUser={newSingleUser}
-                                            openEditProfile = {openEditProfile}
-                                            handleEditProfileClose = {handleEditProfileClose}
+                                    {followInfo > 0 ?<Button onClick={handleUnFollow} style={{color: 'gold'}}>
+                                        <StarIcon/> Followed
+                                    </Button>
+                                    :<Button onClick={handleFollow} style={{color: 'white'}}> 
+                                    <StarOutlineIcon/> Follow 
+                                </Button>
+                                     }
 
-                                        ></EditModal>
-
-                                        
-                                    </ListItemIcon>
                                     </>}
                                     <br />
                                     
@@ -342,6 +384,7 @@ const Dashboard = () => {
                                 posts.map(post => <Post
                                     key = {post.id}
                                     post = {post}
+                                    newSingleUser = {newSingleUser}
                                 ></Post>)
                             }
                         </Grid>
@@ -354,7 +397,7 @@ const Dashboard = () => {
                         <Box style={{backgroundColor: '#262626', padding: '20px', color: 'white'}}>
                             <Container>
                                 <Typography sx={{ fontSize: 26, color: 'white' }} color="text.secondary" gutterBottom>
-                                    Your Photos
+                                    Photos
                                 </Typography>
                                 
                                 <Box
@@ -372,23 +415,25 @@ const Dashboard = () => {
                                             ></UserPhotos>)
                                         }
                                                                         
-                                    {/* <Grid item xs={6}>
-                                    1
-                                    </Grid> */}
+                                    
                                     
                                     </Grid>
-                                    {/* <Grid container 
+                                    {newSingleUser.email===user.email &&<>
+                                    <Box>
+                                        You Follows
+                                    </Box>
+                                    <Grid container 
                                         spacing={{ xs: 3, md: 3 }} 
                                         columns={{ xs: 6, sm: 6, md: 6 }}
                                         className="specialCenter"
                                     >
                                         {
-                                            posts.map(post => <UserPhotos
+                                            allFollowInfo.map(post => <FollowingUsers
                                                 key = {post.id}
                                                 post = {post}
-                                            ></UserPhotos>)
+                                            ></FollowingUsers>)
                                         }
-                                    </Grid> */}
+                                    </Grid></>}
                                 </Box>
                 </Container>
             </Box>

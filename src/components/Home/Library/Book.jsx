@@ -14,9 +14,11 @@ import useUserInfo from '../../../hooks/useUserInfo';
 import PostRating from '../Home/Rating/PostRating';
 import axios from 'axios';
 import RatingModal from '../Home/Modal/RatingModal';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 const Book = ({post}) => {
     const{singleUserInfo} = useUserInfo();
-    const{id, type, postTitle, bookURL, authorName, blogPost, coverImageURL, category, rating} = post;
+    const{id, type, postTitle, bookURL, authorName, authorPhotoUrl, blogPost, coverImageURL, category, rating, writerName} = post;
 
     const handleSaveOnClick = (e) => {
         alert('Saved Successfully!');
@@ -73,6 +75,66 @@ const Book = ({post}) => {
         avgRating = sumRating;
     }
 
+        // Like 
+
+        const [likeInfo, setLikeInfo] = useState([]);
+        const [likeId, setLikeId] = useState([]);
+      
+        useEffect(() => {
+          axios.get(`/api/likes?userId=${singleUserInfo.id}&&postId=${id}`)
+          .then(function (response){
+              
+              console.log(response.data.map(data=>data).map(data=>data.like).length);
+              setLikeInfo(response.data.map(data=>data).map(data=>data.like));
+              setLikeId(response.data.map(data=>data).map(data=>data.id));
+              // console.log(response.data.map(data=>data).map(data=>data.id));
+             
+          })
+      }, [id, singleUserInfo.id])
+      
+          // console.log(postTitle);
+          console.log(likeInfo.length);
+      
+        const handleLike = (e) =>{
+      
+          console.log('Like API Called for', likeId[0]);
+      
+          axios.post(`/api/likes`,{
+              like: 1,
+              UserId: singleUserInfo.id,
+              inventoryId: id
+          });
+          setTimeout("location.href = '/home'",1500);   
+          // window.location.reload(false);        
+        }
+      
+        const handleDisLike = (e) =>{
+      
+          console.log('Dislike API Called for', likeId[0]);
+      
+          axios.delete(`/api/likes/${likeId[0]}`);
+          setTimeout("location.href = '/home'",1500);         
+          // window.location.reload(false);      
+          
+        }
+      
+      
+        const [allLikeInfo, setAllLikeInfo] = useState([]);
+      
+        let sumLikes = 0;
+        
+        useEffect(() => {
+            axios.get(`/api/likes?postId=${id}`)
+            .then(function (response){
+                setAllLikeInfo(response.data.reverse().map(data=>data.like));
+            })
+            
+        }, [id])
+        
+        for (let x in allLikeInfo) {
+            sumLikes += allLikeInfo[x];
+          }
+
     return (
             <Grid item xs={6} 
                 className="specialCenter"
@@ -82,17 +144,19 @@ const Book = ({post}) => {
                         
                         <CardActions>
                             {/* <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}} src={singleUserInfo.photoURL} alt="User's Photo" /> */}
-
+                            {/* <a style={{textDecoration: "none"}} href={`/user/${id}`}><> */}
                             {
-                                singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={singleUserInfo.photoURL} alt="" />
+                                authorPhotoUrl && <img style={{ width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={authorPhotoUrl} alt="" />
                             }
                             {
-                                !singleUserInfo.photoURL && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
+                                !authorPhotoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
                             }
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                                <BorderColorIcon/> {authorName}
+                              &nbsp; {authorName}
                             </Typography>
+                            
+                            {/* </></a> */}
                         </CardActions>
                         <CardActions style={{justifyContent: 'left'}}>
                             <img style={{width: '100%', height: '350px', marginRight: '10px'}} src={coverImageURL} alt="" />
@@ -113,29 +177,68 @@ const Book = ({post}) => {
                                 </Typography></>
                                     
                                 }</>}
+                                {writerName && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                    <BorderColorIcon/> {writerName}
+                                </Typography>}
+                                
                                 <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
                                       <CategoryIcon/>&nbsp;Category: {category}
                                 </Typography>
-                                <CardActions>
-                                    <Typography sx={{ fontSize: 12, color: 'white' }} color="text.secondary" gutterBottom>
-                                        <a style={{textDecoration: "none"}} href="{bookURL}">
-                                            <Button sx={{ fontSize: 12, color: 'white' }} style={{color: 'white'}} variant="outlined"> <CloudDownloadIcon/> &nbsp;&nbsp;Download the Book</Button>
-                                        </a>
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 12, color: 'white' }} color="text.secondary" gutterBottom>
-                                        <a style={{textDecoration: "none"}} href={`/post/${id}`}>
-                                            <Button sx={{ fontSize: 12, color: 'white' }} style={{color: 'white'}} variant="outlined"> <AutoStoriesIcon/> &nbsp;&nbsp;Read Online</Button>
-                                        </a>
-                                    </Typography>
+
+                                {/* <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
+                                      <FavoriteIcon/>&nbsp;Like: {sumLikes}
+                                </Typography> */}
+
+                                {/* <CardActions style={{justifyContent: 'left'}}>
+
+                                    {
                                     
+                                        likeInfo.length > 0 ?
+                                        <>
+                                            <IconButton onClick={handleDisLike} style={{color: 'white'}} >
+                                            <ThumbUpIcon/>
+                                                
+                                            </IconButton>
+                                            <p style={{color: 'white'}}>Liked</p>
+                                        </>
+                                        :
+                                        <>
+                                            <IconButton onClick={handleLike} style={{color: 'white'}}>
+                                            <ThumbUpOutlinedIcon/>
+                                            </IconButton>
+                                            <p style={{color: 'white'}}>Like</p>
+                                        </>
+                                        
+                                    }
 
-                                </CardActions>
+                                </CardActions> */}
 
-                                
-                                <CardActions style={{}}>
-                                    <IconButton style={{color: 'white'}} aria-label="add to favorites">
-                                        <FavoriteIcon /> 
-                                    </IconButton>
+                                <CardActions style={{justifyContent: 'left'}}>
+
+                                {
+                                    
+                                    likeInfo.length > 0 ?
+                                    <>
+                                        <IconButton onClick={handleDisLike} style={{color: 'white'}} >
+                                        <ThumbUpIcon/>
+                                            
+                                        </IconButton>
+                                        <p style={{color: 'white'}}>Liked ({sumLikes})</p>
+                                    </>
+                                    :
+                                    <>
+                                        <IconButton onClick={handleLike} style={{color: 'white'}}>
+                                        <ThumbUpOutlinedIcon/>
+                                        </IconButton>
+                                        <p style={{color: 'white'}}>Like ({sumLikes})</p>
+                                    </>
+                                    
+                                }
+
+
+                                    {/* <IconButton style={{color: 'white'}} aria-label="add to favorites">
+                                        <FavoriteIcon />
+                                    </IconButton> */}
                                     <IconButton onClick={handleSaveOnClick} style={{color: 'white'}} aria-label="share">
                                         <CollectionsBookmarkRoundedIcon />
                                     </IconButton>

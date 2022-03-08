@@ -58,7 +58,16 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
             authorPhotoUrl: singleUserInfo.photoUrl,
             email: singleUserInfo.email,
             postTitle: postInfo.postTitle,
+            writerName: postInfo.writerName,
             type: 'book',
+            bookURL: postInfo.bookURL,
+            coverImageURL: postInfo.coverImageURL,
+            category: postInfo.category
+        });
+
+        axios.post(`/api/books`,{
+            UserId: singleUserInfo.Id,
+            bookName: postInfo.postTitle,
             bookURL: postInfo.bookURL,
             coverImageURL: postInfo.coverImageURL,
             category: postInfo.category
@@ -129,6 +138,18 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                     label="Title of the post"
                     focused
                 />
+                <TextField
+                    // label="Size"
+                    // disabled
+                    sx={{width: '90%', m:1}}
+                    id="outlined-size-small"
+                    name = "writerName"
+                    onBlur = {handleOnBlur}
+                    defaultValue=""
+                    size="small"
+                    label="Writer Name"
+                    focused
+                />
                 {/* <TextField
                     // label="Size"
                     disabled
@@ -185,6 +206,8 @@ const BookModal = ({openBookModal, handleBookModalClose}) => {
                       <option value={'History'}>History</option>
                       <option value={'Science'}>Science</option>
                       <option value={'Nature'}>Nature</option>
+                      <option value={'Literature'}>Literature</option>
+                      <option value={'OtherCategories'}>Other Categories</option>
                   </NativeSelect>
                 </FormControl>
                 

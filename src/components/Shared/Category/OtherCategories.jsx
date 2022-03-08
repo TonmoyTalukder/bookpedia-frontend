@@ -16,7 +16,7 @@ import CategoryPost from './CategoryPost';
 import Post from '../../Home/Home/Posts/Post';
 import Users from '../../Home/Users/Users';
 
-const Science = ({singleUser}) => {
+const OtherCategories = ({singleUser}) => {
     const [openBlogModal, setOpenBlogModal] = useState(false);
     const handleBlogModalOpen = () => setOpenBlogModal(true);
     const handleBlogModalClose = () => setOpenBlogModal(false);
@@ -41,7 +41,7 @@ const Science = ({singleUser}) => {
 
         axios.get('/api/inventories')
         .then(function (response){
-            setPosts(response.data.reverse().map(data=>data).filter(uu=>(uu.category === 'Science')));
+            setPosts(response.data.reverse().map(data=>data).filter(uu=>(uu.category === 'OtherCategories')));
         })
         
     }, [])
@@ -49,7 +49,7 @@ const Science = ({singleUser}) => {
     if(isLoading){return <CircularProgress/>}
 
     return (
-        <div>
+        <div style={{height: '100vh', backgroundColor: '#262626'}}>
             <Header />
             <Box sx={{ padding: '5px', width: '100%', backgroundColor: '#262626' }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ alignItems: 'flex-start', backgroundColor: '#262626' }} >
@@ -251,4 +251,4 @@ const Science = ({singleUser}) => {
     );
 };
 
-export default Science;
+export default OtherCategories;

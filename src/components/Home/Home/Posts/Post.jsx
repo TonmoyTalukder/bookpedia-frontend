@@ -15,15 +15,17 @@ import CategoryIcon from '@mui/icons-material/Category';
 import CollectionsBookmarkRoundedIcon from '@mui/icons-material/CollectionsBookmarkRounded';
 import axios from 'axios';
 import RatingModal from '../Modal/RatingModal';
-import { ConnectingAirportsOutlined } from '@mui/icons-material';
+import { ConnectingAirportsOutlined, ContentCutOutlined } from '@mui/icons-material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 
-const Post = ({post}) => {
-    // const{user} = useAuth();
+const Post = ({post, newSingleUser}) => {
+    const{user} = useAuth();
     const{singleUserInfo} = useUserInfo();
+    // console.log(singleUserInfo.email);
 
-    const{id, type, postTitle, bookURL, authorName, authorPhotoUrl, blogPost, coverImageURL, category, rating} = post;
+    const{id, type, email, postTitle, bookURL, authorName, writerName, authorPhotoUrl, blogPost, coverImageURL, category, rating} = post;
 
 //    console.log(authorName);
 
@@ -95,12 +97,16 @@ const handleSaveOnClick = (e) => {
     axios.get(`/api/likes?userId=${singleUserInfo.id}&&postId=${id}`)
     .then(function (response){
         
+        // console.log(response.data.map(data=>data).map(data=>data.like).length);
         setLikeInfo(response.data.map(data=>data).map(data=>data.like));
         setLikeId(response.data.map(data=>data).map(data=>data.id));
-        console.log(response.data.map(data=>data).map(data=>data.id));
+        // console.log(response.data.map(data=>data).map(data=>data.id));
        
     })
 }, [id, singleUserInfo.id])
+
+    // console.log(postTitle);
+    // console.log(likeInfo.length);
 
   const handleLike = (e) =>{
 
@@ -111,7 +117,7 @@ const handleSaveOnClick = (e) => {
         UserId: singleUserInfo.id,
         inventoryId: id
     });
-    setTimeout("location.href = '/home'",1500);   
+    setTimeout(`location.href = '${window.location.href}'`,500);   
     // window.location.reload(false);        
   }
 
@@ -120,7 +126,7 @@ const handleSaveOnClick = (e) => {
     console.log('Dislike API Called for', likeId[0]);
 
     axios.delete(`/api/likes/${likeId[0]}`);
-    setTimeout("location.href = '/home'",1500);         
+    setTimeout(`location.href = '${window.location.href}'`,500);         
     // window.location.reload(false);      
     
   }
@@ -142,6 +148,15 @@ const handleSaveOnClick = (e) => {
       sumLikes += allLikeInfo[x];
     }
 
+    const handleDeletePost = (e) =>{
+        console.log('Dislike API Called for', likeId[0]);
+
+        axios.delete(`/api/inventories/${id}`);
+        console.log("Clicked delte api for the post ID: ", id);
+
+        setTimeout(`location.href = '${window.location.href}'`,500);
+    }
+
     return (
         <div>
             <Grid item xs={12} sm={12} md={12} lg={12} 
@@ -152,7 +167,7 @@ const handleSaveOnClick = (e) => {
                         
                         <CardActions>
                             {/* <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}} src={singleUserInfo.photoURL} alt="User's Photo" /> */}
-
+                            {/* <a style={{textDecoration: "none"}} href={`/user/${singleUserInfo.id}`}><> */}
                             {
                                 authorPhotoUrl && <img style={{ width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={authorPhotoUrl} alt="" />
                             }
@@ -161,8 +176,18 @@ const handleSaveOnClick = (e) => {
                             }
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                                <BorderColorIcon/> {authorName}
+                            &nbsp;{authorName}
                             </Typography>
+                            {/* </></a> */}
+
+                            {/* {newSingleUser.email===user.email && <Box style={{width: '200px', marginLeft: '40%', textAlign: 'right'}}>
+                                
+                                <Button sx={{ fontSize: 20, color: 'white' }} gutterBottom>
+                                    X
+                                </Button>
+                            </Box>} */}
+
+                            
                         </CardActions>
                         <CardActions style={{justifyContent: 'left'}}>
                             <img style={{width: '40%', height: '350px', marginRight: '10px'}} src={coverImageURL} alt="" />
@@ -173,10 +198,13 @@ const handleSaveOnClick = (e) => {
                                     {postTitle}
                                 </Typography>
                                 <br />
+                                {writerName && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                    <BorderColorIcon/> {writerName}
+                                </Typography>}
                                 
                                 {bookURL && <>
                                     <Typography sx={{ fontSize: 15, color: 'white' }} color="text.secondary" gutterBottom>
-                                        <a style={{textDecoration: "none"}} href="{bookURL}">
+                                        <a style={{textDecoration: "none"}} href={bookURL}>
                                             <Button style={{color: 'white'}} variant="outlined"> <CloudDownloadIcon/> &nbsp;&nbsp;Download the Book</Button>
                                         </a>
                                     </Typography>
@@ -205,23 +233,54 @@ const handleSaveOnClick = (e) => {
                                       <CategoryIcon/>&nbsp;Category: {category}
                                 </Typography>
 
-                                <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
+                                {/* <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
                                       <FavoriteIcon/>&nbsp;Like: {sumLikes}
-                                </Typography>
+                                </Typography> */}
 
                                 <CardActions style={{justifyContent: 'left'}}>
-                                    <IconButton onClick={handleLike} style={{color: 'white'}} aria-label="add to favorites">
-                                        <ThumbUpIcon/>
-                                    </IconButton>
 
-                                    <IconButton onClick={handleDisLike} style={{color: 'white'}} aria-label="add to favorites">
+                                    {
+                                    
+                                        likeInfo.length > 0 ?
+                                        <>
+                                            <IconButton onClick={handleDisLike} style={{color: 'white'}} >
+                                            <ThumbUpIcon/>
+                                                
+                                            </IconButton>
+                                            <p style={{color: 'white'}}>Liked ({sumLikes})</p>
+                                        </>
+                                        :
+                                        <>
+                                            <IconButton onClick={handleLike} style={{color: 'white'}}>
+                                            <ThumbUpOutlinedIcon/>
+                                            </IconButton>
+                                            <p style={{color: 'white'}}>Like ({sumLikes})</p>
+                                        </>
+                                        
+                                    }
+
+                                    {singleUserInfo.email === email ? <Button onClick={handleDeletePost} style={{color: 'white', fontSize: 16, border: '1px solid red'}} aria-label="add to favorites">
+                                        Delete Post
+                                    </Button>
+                                    :
+                                    <></>}
+
+                                    {/* <IconButton onClick={handleLike} style={{color: 'white'}} aria-label="add to favorites">
+                                        <ThumbUpIcon/>
+                                    </IconButton> */}
+
+                                    {/* <IconButton onClick={handleDisLike} style={{color: 'white'}} aria-label="add to favorites">
+                                        <ThumbUpIcon/>
+                                    </IconButton> */}
+
+                                    {/* <IconButton onClick={handleDisLike} style={{color: 'white'}} aria-label="add to favorites">
                                         <ThumbDownAltIcon/>
-                                    </IconButton>
+                                    </IconButton> */}
                                 </CardActions>
 
                                 <CardActions style={{justifyContent: 'center'}}>
 
-
+                                   
 
                                     <IconButton onClick={handleSaveOnClick} style={{color: 'white'}} aria-label="share">
                                         <CollectionsBookmarkRoundedIcon />

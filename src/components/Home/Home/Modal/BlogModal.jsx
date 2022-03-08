@@ -64,6 +64,14 @@ const BlogModal = ({openBlogModal, handleBlogModalClose}) => {
             blogPost: postInfo.blogPost,
             category: postInfo.category
         });
+
+        axios.post(`/api/blogs/`,{
+            UserId: singleUserInfo.id,
+            blogTitle: postInfo.postTitle,
+            blogcoverImageURL: postInfo.coverImageURL,
+            blogDetails: postInfo.blogPost
+        });
+
         // console.log("After Put", postInfo);
         handleBlogModalClose();
         // window.location.reload(false); 
@@ -207,6 +215,8 @@ const BlogModal = ({openBlogModal, handleBlogModalClose}) => {
                     <option value={'History'}>History</option>
                     <option value={'Science'}>Science</option>
                     <option value={'Nature'}>Nature</option>
+                    <option value={'Literature'}>Literature</option>
+                    <option value={'OtherCategories'}>Other Categories</option>
                 </NativeSelect>
                 </FormControl>
                 

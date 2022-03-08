@@ -29,14 +29,14 @@ const SavedPost = ({post}) => {
                             {/* <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}} src={singleUserInfo.photoURL} alt="User's Photo" /> */}
 
                             {
-                                inventory.photoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={inventory.photoUrl} alt="" />
+                                inventory.authorPhotoUrl && <img style={{ width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src={inventory.authorPhotoUrl} alt="" />
                             }
                             {
-                                !inventory.photoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
+                                !inventory.authorPhotoUrl && <img style={{width: '45px', height: '45px', borderRadius: '50%', padding: ''}}  src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" alt="" />
                             }
                             
                             <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
-                                <BorderColorIcon/> {inventory.authorName}
+                                  &nbsp; {inventory.authorName}
                             </Typography>
                         </CardActions>
                         <CardActions style={{justifyContent: 'left'}}>
@@ -58,6 +58,14 @@ const SavedPost = ({post}) => {
                                 </Typography></>
                                     
                                 }</>}
+
+
+{inventory.writerName && <Typography sx={{ fontSize: 20, color: 'white' }} color="text.secondary" gutterBottom>
+                                    <BorderColorIcon/> {inventory.writerName}
+                                </Typography>}
+
+
+
                                 <Typography sx={{ fontSize: 15, color: 'white', marginTop:'10px' }} color="text.secondary" gutterBottom>
                                       <CategoryIcon/>&nbsp;Category: {inventory.category}
                                 </Typography>

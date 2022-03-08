@@ -28,6 +28,8 @@ import useUserInfo from './hooks/useUserInfo';
 import PostSearch from './components/Search/PostSearch';
 import Search from '@mui/icons-material/Search';
 import NotFound from './components/NotFound/NotFound';
+import Literature from './components/Shared/Category/Literature';
+import OtherCategories from './components/Shared/Category/OtherCategories';
 
 
 
@@ -84,6 +86,12 @@ function App() {
             <PrivateRoute exact path='/category/nature'>
               <Nature/>
             </PrivateRoute>
+            <PrivateRoute exact path='/category/literature'>
+              <Literature/>
+            </PrivateRoute>
+            <PrivateRoute exact path='/category/other-categories'>
+              <OtherCategories/>
+            </PrivateRoute>
 
             <PrivateRoute exact path='/profile'>
               <Dashboard></Dashboard>
@@ -108,6 +116,9 @@ function App() {
             <PrivateRoute exact path='/notifications'>
               <Notification></Notification>
             </PrivateRoute>
+            {/* <PrivateRoute path="/*">
+              <NotFound></NotFound>
+            </PrivateRoute> */}
           </Switch>
           {/* {user?.email ?
             <>
@@ -131,12 +142,16 @@ function App() {
           <PublicRoute exact path='/login'>
               <Login></Login>
           </PublicRoute>
-          <PublicRoute exact path='/register'>
+          <PublicRoute exact  path='/register'>
               <Register></Register>
           </PublicRoute>
-          <Route path="/*">
-              <NotFound></NotFound>
-          </Route>
+
+          {/* <Switch>
+            <Route exact path="/*">
+                <NotFound></NotFound>
+            </Route>
+          </Switch> */}
+          
         </Router>
       </AuthProvider>
     </div>

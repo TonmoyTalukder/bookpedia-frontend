@@ -97,6 +97,30 @@ const History = ({singleUser}) => {
                                 </ListItemButton>
                             </ListItem></a>
                             <Divider/>
+                            <a style={{textDecoration: "none"}} href={`/category/literature`}>
+                            <ListItem disablePadding>
+                                <ListItemButton onClick={handleOnClickScience} >
+                                    <ListItemIcon sx={{ color: 'white' }}>
+                                        <DoubleArrowIcon/>
+                                    </ListItemIcon>
+                                    <Typography variant="body1"  sx={{ color: 'white' }} color="text.secondary" gutterBottom>
+                                        Literature
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem></a>
+                            <Divider/>
+                            <a style={{textDecoration: "none"}} href={`/category/other-categories`}>
+                            <ListItem disablePadding>
+                                <ListItemButton onClick={handleOnClickScience} >
+                                    <ListItemIcon sx={{ color: 'white' }}>
+                                        <DoubleArrowIcon/>
+                                    </ListItemIcon>
+                                    <Typography variant="body1"  sx={{ color: 'white' }} color="text.secondary" gutterBottom>
+                                        Other Categories
+                                    </Typography>
+                                </ListItemButton>
+                            </ListItem></a>
+                            <Divider/>
                             <Typography variant="h5"  sx={{ color: 'white' }} color="text.secondary" gutterBottom>
                                 Type     
                             </Typography>
